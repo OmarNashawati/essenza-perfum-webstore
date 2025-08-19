@@ -1,5 +1,13 @@
-<script setup></script>
+<script setup>
+import Navbar from './components/Navbar.vue'
+import FooterComponent from './components/Footer.vue'
+</script>
 
-<template>Hello Vue!</template>
+<template>
+  <Navbar />
+  <main>Hello</main>
 
-<style scoped></style>
+  <FooterComponent />
+</template>
+
+<style lang="scss" scoped></style>
