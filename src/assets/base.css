@@ -4,7 +4,7 @@
   --white: #ffffff;
   --black: #000000;
 
-  /*Nutral*/
+  /* Neutrals */
   --gray-50: #e8e8e8;
   --gray-100: #d1d1d1;
   --gray-200: #bbbbbb;
@@ -36,6 +36,12 @@
   --gold-1800: #312202;
   --gold-1900: #181101;
 
+  /* Success, Warning, Danger, Info */
+  --success: #22c55e;
+  --warning: #facc15;
+  --danger: #ef4444;
+  --info: #3b82f6;
+
   --space-0: 0rem;
   --space-1: 0.25rem; /* 4px */
   --space-2: 0.5rem; /* 8px */
@@ -56,6 +62,7 @@
   --on-secondary: var(--gold-50);
   --accent: var(--gold-900);
   --on-accent: var(--white);
+  --on-accent-hover: var(--gold-1100);
 
   --bg: var(--gold-50);
   --text: var(--gray-900);
@@ -73,6 +80,7 @@
   --on-secondary: var(--gray-900);
   --accent: var(--gold-900);
   --on-accent: var(--white);
+  --on-accent-hover: var(--gold-1100);
 
   --bg: var(--primary);
   --text: var(--secondary);
