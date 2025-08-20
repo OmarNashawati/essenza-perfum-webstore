@@ -36,8 +36,9 @@ export const perfumes = [
     images: [
       'https://shop.com/images/bleu-chanel-1.jpg',
       'https://shop.com/images/bleu-chanel-2.jpg',
+      'https://shop.com/images/bleu-chanel-3.jpg',
     ],
-    availability: true,
+    availability: false,
     release_year: 2014,
     concentration: 'Eau de Parfum',
     sex: 'male',

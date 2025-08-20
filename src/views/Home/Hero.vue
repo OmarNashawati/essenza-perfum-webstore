@@ -1,6 +1,9 @@
 <script setup>
+import { useRouter } from 'vue-router'
 import { homeContent } from '@/assets/data/HomeContent'
 import PrimeButton from '@/components/PrimeButton.vue'
+
+const router = useRouter()
 </script>
 
 <template>
@@ -9,7 +12,9 @@ import PrimeButton from '@/components/PrimeButton.vue'
       <h1 class="title">{{ homeContent.hero.title }}</h1>
       <p class="sub-title">{{ homeContent.hero.subtitle }}</p>
     </div>
-    <PrimeButton>{{ homeContent.hero.cta.text }}</PrimeButton>
+    <PrimeButton @click="router.push('/products')">{{
+      homeContent.hero.cta.text
+    }}</PrimeButton>
   </section>
 </template>
 

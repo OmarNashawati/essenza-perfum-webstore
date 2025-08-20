@@ -29,12 +29,12 @@ img {
 }
 
 ::-webkit-scrollbar {
-  display: none;
+  /* display: none; */
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #e0e0e0;
+  /* background: #e0e0e0; */
   border-radius: 4px;
 }
 

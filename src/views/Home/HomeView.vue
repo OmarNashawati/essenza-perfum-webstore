@@ -1,11 +1,10 @@
 <script setup>
 import { getPerfumes } from '@/services/productService'
+import { homeContent } from '@/assets/data/HomeContent'
 
 import Hero from './Hero.vue'
 import Categories from './Categories.vue'
 import ProductSection from '@/components/ProductSection.vue'
-
-import { homeContent } from '@/assets/data/HomeContent'
 </script>
 
 <template>
@@ -15,7 +14,9 @@ import { homeContent } from '@/assets/data/HomeContent'
 
   <ProductSection
     v-for="section in homeContent.sections"
+    layout="row"
     :key="section.id"
+    :id="section.id"
     :title="section.title"
     :products-list="getPerfumes({ tags: [section.products] })"
   />

@@ -1,17 +1,21 @@
 <script setup>
+import { useRouter } from 'vue-router'
 import { useThemeStore } from '@/stores/themeStore'
+import { useCartStore } from '@/stores/cartStore'
+const router = useRouter()
 const store = useThemeStore()
+const cart = useCartStore().cart
 </script>
 
 <template>
   <header>
-    <div class="logo">
+    <div @click="router.push('/')" class="logo">
       <img src="@/assets/logo.svg" alt="Essenza Logo" />
     </div>
     <div class="buttons">
       <button class="but-icon cart-button">
         <i class="pi pi-shopping-bag"></i>
-        <i class="cart-items-counter">0</i>
+        <i class="cart-items-counter">{{ cart.items.length }}</i>
       </button>
       <button @click="store.toggleTheme()" class="but-icon">
         <i
@@ -33,6 +37,7 @@ header {
 
   .logo {
     height: 3.5rem;
+    cursor: pointer;
   }
 
   .buttons {

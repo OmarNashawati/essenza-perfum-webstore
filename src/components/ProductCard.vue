@@ -1,14 +1,14 @@
 <script setup>
+import { useRouter } from 'vue-router'
 import PrimeButton from './PrimeButton.vue'
-const props = defineProps(['product'])
+import { calculateDiscount } from '@/utiles/money'
 
-function calculateDiscount(price, discount) {
-  return price - (price * discount) / 100
-}
+const router = useRouter()
+const props = defineProps(['product'])
 </script>
 
 <template>
-  <div class="product-card">
+  <div @click="router.push(`/products/${product.sku}`)" class="product-card">
     <div class="image">
       <img src="@/assets/empty-image.png" alt="" srcset="" />
     </div>
@@ -31,12 +31,12 @@ function calculateDiscount(price, discount) {
 
 <style lang="scss" scoped>
 .product-card {
-  width: 20%;
-  max-width: 200px;
-  min-width: 180px;
+  flex: 0 0 220px;
+  width: 220px;
   background: var(--surface);
   border-radius: 0.4rem;
   overflow: hidden;
+  cursor: pointer;
 
   .image {
     overflow: hidden;
@@ -54,8 +54,8 @@ function calculateDiscount(price, discount) {
     height: 150px;
     padding: var(--space-2);
 
-    .name {
-    }
+    // .name {
+    // }
 
     .price-container {
       display: flex;
@@ -64,6 +64,8 @@ function calculateDiscount(price, discount) {
 
       .original-price {
         text-decoration: line-through;
+        font-weight: 200;
+        color: crimson;
       }
 
       .price {
