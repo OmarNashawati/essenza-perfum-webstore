@@ -13,7 +13,7 @@ const cart = useCartStore().cart
       <img src="@/assets/logo.svg" alt="Essenza Logo" />
     </div>
     <div class="buttons">
-      <button class="but-icon cart-button">
+      <button @click="router.push('/cart')" class="but-icon cart-button">
         <i class="pi pi-shopping-bag"></i>
         <i class="cart-items-counter">{{ cart.items.length }}</i>
       </button>

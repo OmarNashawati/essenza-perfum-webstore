@@ -2,30 +2,36 @@
 import { useRouter } from 'vue-router'
 import PrimeButton from './PrimeButton.vue'
 import { calculateDiscount } from '@/utiles/money'
+import { useCartStore } from '@/stores/cartStore'
 
 const router = useRouter()
 const props = defineProps(['product'])
+const cart = useCartStore()
 </script>
 
 <template>
-  <div @click="router.push(`/products/${product.sku}`)" class="product-card">
-    <div class="image">
-      <img src="@/assets/empty-image.png" alt="" srcset="" />
-    </div>
-    <div class="body">
-      <p class="name">{{ product.name }}</p>
-      <div>
-        <div class="price-container">
-          <p class="price">
-            ${{ calculateDiscount(product.price, product.discount) }}
-          </p>
-          <p v-if="product.discount > 0" class="original-price">
-            ${{ product.price }}
-          </p>
+  <div class="product-card">
+    <div @click="router.push(`/products/${product.sku}`)">
+      <div class="image">
+        <img src="@/assets/empty-image.png" alt="" srcset="" />
+      </div>
+
+      <div class="body">
+        <p class="name">{{ product.name }}</p>
+        <div>
+          <div class="price-container">
+            <p class="price">
+              ${{ calculateDiscount(product.price, product.discount) }}
+            </p>
+            <p v-if="product.discount > 0" class="original-price">
+              ${{ product.price }}
+            </p>
+          </div>
         </div>
-        <PrimeButton>Add to Cart</PrimeButton>
       </div>
     </div>
+
+    <PrimeButton @click="cart.addToCart(product, '1')">Add to Cart</PrimeButton>
   </div>
 </template>
 
