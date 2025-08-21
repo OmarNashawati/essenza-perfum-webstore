@@ -3,7 +3,11 @@ import { reactive, ref } from 'vue'
 import { calculateDiscount } from '@/utiles/money'
 
 export const useCartStore = defineStore('cart', () => {
-  const cart = reactive({ items: [], total: 0, discount_total: 0 })
+  const cart = reactive({
+    items: [],
+    total: 0,
+    discount_total: 0,
+  })
 
   const addToCart = (item, quantity) => {
     const { name, sku, price, discount } = item
@@ -16,19 +20,20 @@ export const useCartStore = defineStore('cart', () => {
       price_with_discount: calculateDiscount(price, discount),
       quantity,
     })
-    calculateCartTotal()
   }
 
-  function calculateCartTotal() {
-    let total = 0
-    let discouted = 0
-    cart.items.forEach((cartItem) => {
-      const { original_price, price_with_discount, quantity } = cartItem
-      total += original_price * Number(quantity)
-      discouted += price_with_discount * Number(quantity)
-    })
-    cart.discount_total = discouted
-    cart.total = total
+  function recalculateCartTotal() {
+    cart.total = cart.items.reduce(
+      (acc, cartItem) =>
+        acc + cartItem.original_price * Number(cartItem.quantity),
+      0
+    )
+
+    cart.discount_total = cart.items.reduce(
+      (acc, cartItem) =>
+        acc + cartItem.price_with_discount * Number(cartItem.quantity),
+      0
+    )
   }
 
   const removeFromCart = (item) => {
@@ -38,10 +43,7 @@ export const useCartStore = defineStore('cart', () => {
 
     if (itemToRemove >= 0) {
       cart.items.splice(itemToRemove, 1)
-      calculateCartTotal()
     }
-
-    calculateCartTotal()
   }
-  return { cart, addToCart, removeFromCart }
+  return { cart, addToCart, removeFromCart, recalculateCartTotal }
 })

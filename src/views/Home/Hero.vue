@@ -8,13 +8,13 @@ const router = useRouter()
 
 <template>
   <section class="hero-section">
-    <div>
+    <div class="hero-contant">
       <h1 class="title">{{ homeContent.hero.title }}</h1>
       <p class="sub-title">{{ homeContent.hero.subtitle }}</p>
+      <PrimeButton class="hero-btn" @click="router.push('/products')">{{
+        homeContent.hero.cta.text
+      }}</PrimeButton>
     </div>
-    <PrimeButton @click="router.push('/products')">{{
-      homeContent.hero.cta.text
-    }}</PrimeButton>
   </section>
 </template>
 
@@ -24,14 +24,30 @@ const router = useRouter()
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
   min-height: 500px;
   text-align: center;
-  gap: var(--space-8);
 
-  .sub-title {
-    font-size: 1rem;
-    color: var(--text-soft);
+  .hero-contant {
+    max-width: 70%;
+    padding: var(--space-8);
+
+    @media (max-width: 1024px) {
+      padding: var(--space-4);
+      max-width: 100%;
+    }
+
+    .title {
+      font-size: clamp(1rem, 20vw, 4rem);
+    }
+
+    .sub-title {
+      font-size: 1rem;
+      color: var(--text-soft);
+    }
+
+    .hero-btn {
+      margin-top: var(--space-10);
+    }
   }
 }
 </style>

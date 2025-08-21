@@ -13,7 +13,6 @@ button {
   width: 100%;
   border-radius: 0.3rem;
   padding: var(--space-3);
-  max-width: 300px;
 
   &:hover {
     background: var(--on-accent-hover);
