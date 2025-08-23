@@ -28,6 +28,25 @@ img {
   margin-bottom: var(--space-4);
 }
 
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='tel'],
+input[type='date'] {
+  padding: var(--space-4) var(--space-3);
+  border-radius: 0.5rem;
+  width: 100%;
+  background-color: var(--surface);
+}
+
+input[type='textarea'] {
+  text-align: left;
+  padding: var(--space-4) var(--space-3);
+  border-radius: 0.5rem;
+  width: 100%;
+  background-color: var(--surface);
+}
+
 ::-webkit-scrollbar {
   /* display: none; */
   width: 8px;

@@ -1,8 +1,10 @@
 <script setup>
-import PrimeButton from '@/components/PrimeButton.vue'
+import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cartStore'
 import { formatMoney } from '@/utiles/money'
-
+import PrimeButton from '@/components/PrimeButton.vue'
+import PaymentSummary from '@/components/PaymentSummary.vue'
+const router = useRouter()
 const cart = useCartStore()
 </script>
 
@@ -10,6 +12,7 @@ const cart = useCartStore()
   <section class="cart-section">
     <div class="summary" v-if="cart.cart.items.length > 0">
       <div class="cart-summary">
+        <h2>Cart Summary</h2>
         <div
           class="item"
           v-for="cartItem in cart.cart.items"
@@ -64,30 +67,9 @@ const cart = useCartStore()
         </div>
       </div>
 
-      <div class="payment-summary">
-        <h3>Payment Summary</h3>
-        <div class="info">
-          <p>Items</p>
-          <i>
-            {{
-              cart.cart.items.reduce(
-                (acc, cartItem) => acc + Number(cartItem.quantity),
-                0
-              )
-            }}
-          </i>
-
-          <p>Totla</p>
-          <i>${{ cart.cart.total }}</i>
-
-          <p>discounted</p>
-          <i>${{ formatMoney(cart.cart.discount_total) }}</i>
-
-          <p>Saved</p>
-          <i>${{ formatMoney(cart.cart.total - cart.cart.discount_total) }}</i>
-        </div>
-        <PrimeButton>Check out</PrimeButton>
-      </div>
+      <PaymentSummary>
+        <PrimeButton @click="router.push('/checkout')">Check out</PrimeButton>
+      </PaymentSummary>
     </div>
 
     <div v-else class="empty-view">
@@ -171,9 +153,6 @@ const cart = useCartStore()
               }
             }
           }
-
-          .col-2 {
-          }
         }
 
         .actions-row {
@@ -205,30 +184,6 @@ const cart = useCartStore()
             }
           }
         }
-      }
-    }
-  }
-
-  .payment-summary {
-    width: 250px;
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    background-color: var(--surface);
-    padding: var(--space-4);
-    border-radius: 0.5rem;
-
-    @media (max-width: 1024px) {
-      width: 100%;
-    }
-
-    .info {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-
-      i {
-        text-align: end;
       }
     }
   }
