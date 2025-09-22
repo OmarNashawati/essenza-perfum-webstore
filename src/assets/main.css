@@ -47,6 +47,12 @@ input[type='textarea'] {
   background-color: var(--surface);
 }
 
+select {
+  padding: var(--space-2) var(--space-2);
+  border-radius: 0.5rem;
+  background-color: var(--surface);
+}
+
 ::-webkit-scrollbar {
   /* display: none; */
   width: 8px;

@@ -1,6 +1,8 @@
 <script setup>
+import { useProductsStore } from '@/stores/productstore'
 import ProductCard from './ProductCard.vue'
 const props = defineProps(['id', 'title', 'productsList', 'layout'])
+const productStore = useProductsStore()
 
 function scroll(direction) {
   const container = document.querySelector(`#${props.id}-grid`)
@@ -17,7 +19,20 @@ function scroll(direction) {
 
 <template>
   <div class="product-section-wrapper">
-    <h2 class="section-title">{{ title }}</h2>
+    <div class="header">
+      <h2 class="section-title">{{ title }}</h2>
+      <div v-if="layout === 'grid'">
+        Sort by
+        <select v-model="productStore.filter.sort" name="sort-options" id="">
+          <option value="" disabled>Select an option</option>
+          <option value="newest">Newest to Latest</option>
+          <option value="priceLowHigh">Price: Low to High</option>
+          <option value="priceHighLow">Price: High to Low</option>
+          <option value="AtoZ">A-Z</option>
+          <option value="ZtoA">Z-A</option>
+        </select>
+      </div>
+    </div>
 
     <div class="carousel">
       <div
@@ -49,7 +64,12 @@ function scroll(direction) {
 
 <style lang="scss" scoped>
 .product-section-wrapper {
-  padding: var(--space-8);
+  padding: var(--space-4);
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
   .carousel {
     position: relative;

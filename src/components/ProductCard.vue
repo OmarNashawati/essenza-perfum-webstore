@@ -17,6 +17,7 @@ const cart = useCartStore()
 
     <div class="body">
       <p class="name">{{ product.name }}</p>
+      <p class="release-year">{{ product.release_year }}</p>
       <div>
         <div>
           <div class="price-container">
