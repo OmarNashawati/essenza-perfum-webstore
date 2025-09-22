@@ -5,6 +5,7 @@ import FooterComponent from './components/Footer.vue'
 
 import { useCartStore } from './stores/cartStore'
 import { useProductsStore } from './stores/productstore'
+import Notification from './components/Notification.vue'
 
 const cart = useCartStore()
 const products = useProductsStore()
@@ -19,11 +20,18 @@ products.$subscribe((mutation, state) => {
 </script>
 
 <template>
-  <Navbar />
   <main>
+    <Navbar />
     <RouterView />
+    <FooterComponent />
+    <Notification />
   </main>
-  <FooterComponent />
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+</style>

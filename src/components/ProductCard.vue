@@ -1,18 +1,25 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import PrimeButton from './PrimeButton.vue'
 import { calculateDiscount } from '@/utiles/money'
-import { useCartStore } from '@/stores/cartStore'
 
 const router = useRouter()
 const props = defineProps(['product'])
-const cart = useCartStore()
+
+const productsImages = import.meta.glob('../assets/products/*.jpg', {
+  eager: true,
+})
+const getProductImage = (img) => {
+  return productsImages[`../assets/products/${img}`]?.default
+}
 </script>
 
 <template>
-  <div @click="router.push(`/products/${product.sku}`)" class="product-card">
+  <div
+    @click="router.push({ name: 'product', params: { id: product.sku } })"
+    class="product-card"
+  >
     <div class="image">
-      <img src="@/assets/empty-image.png" alt="" srcset="" />
+      <img :src="getProductImage(product.images[0])" alt="" srcset="" />
       <div v-if="product.discount > 0" class="discount">
         {{ product.discount }}% OFF
       </div>
@@ -43,11 +50,10 @@ const cart = useCartStore()
 <style lang="scss" scoped>
 .product-card {
   flex: 0 0 280px;
-  background: var(--surface);
   border-radius: 0.4rem;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 2px 2px 4px 2px rgba($color: #000000, $alpha: 0.1);
+  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 576px) {
   }

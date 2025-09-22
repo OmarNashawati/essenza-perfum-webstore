@@ -13,36 +13,47 @@ const cart = useCartStore().cart
 <template>
   <header>
     <div class="top-bar">
-      <p>Free delivery on all orders above 299$</p>
+      <div class="container">
+        <p>Free delivery on all orders above 299$</p>
+      </div>
     </div>
 
-    <div class="midd-bar">
-      <div @click="router.push('/')" class="logo">
-        <img src="@/assets/logo.svg" alt="Essenza Logo" />
-      </div>
-      <div class="buttons">
-        <button @click="router.push('/cart')" class="button-icon cart-button">
-          <i class="pi pi-shopping-bag"></i>
-          <span class="cart-items-counter">{{ cart.items.length }}</span>
-        </button>
-        <button @click="store.toggleTheme()" class="button-icon">
-          <i
-            class="pi"
-            :class="store.activeTheme === 'dark' ? 'pi-sun' : 'pi-moon'"
-          ></i>
-        </button>
+    <div class="container">
+      <div class="midd-bar">
+        <div @click="router.push('/')" class="logo">
+          <img src="@/assets/logo.svg" alt="Essenza Logo" />
+        </div>
+        <div class="buttons">
+          <button @click="router.push('/cart')" class="button-icon cart-button">
+            <i class="pi pi-shopping-bag"></i>
+            <span class="cart-items-counter">{{ cart.items.length }}</span>
+          </button>
+          <button @click="store.toggleTheme()" class="button-icon">
+            <i
+              class="pi"
+              :class="store.activeTheme === 'dark' ? 'pi-sun' : 'pi-moon'"
+            ></i>
+          </button>
+        </div>
       </div>
     </div>
 
     <div class="bottom-bar">
-      <p
-        v-for="category in categories"
-        @click="
-          router.push({ name: 'products', params: { category: category.slug } })
-        "
-      >
-        {{ category.name }}
-      </p>
+      <div class="container">
+        <div class="categories-wrap">
+          <p
+            v-for="category in categories"
+            @click="
+              router.push({
+                name: 'products',
+                params: { category: category.slug },
+              })
+            "
+          >
+            {{ category.name }}
+          </p>
+        </div>
+      </div>
     </div>
   </header>
 </template>
@@ -56,7 +67,7 @@ header {
       color: var(--on-secondary);
       text-align: center;
       font-size: 0.9rem;
-      padding: var(--space-2);
+      padding: var(--space-2) var(--space-4);
     }
   }
 
@@ -64,7 +75,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--space-2) var(--space-8);
+    padding: var(--space-2) var(--space-4);
     .logo {
       height: 3.5rem;
       cursor: pointer;
@@ -100,16 +111,19 @@ header {
   .bottom-bar {
     border-bottom: 1px solid var(--border-gold);
     border-top: 1px solid var(--border-gold);
-    display: flex;
-    justify-content: center;
-    overflow-x: scroll;
 
-    p {
-      white-space: nowrap;
-      padding: var(--space-2) var(--space-4);
-      cursor: pointer;
-      &:hover {
-        text-decoration: underline;
+    .categories-wrap {
+      display: flex;
+      justify-content: center;
+      overflow-x: scroll;
+      padding: 0 var(--space-4);
+      p {
+        white-space: nowrap;
+        padding: var(--space-2) var(--space-4);
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }

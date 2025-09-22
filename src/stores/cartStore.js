@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
 import { calculateDiscount } from '@/utiles/money'
+import { useNotificationStore } from '@/stores/notification'
 
 export const useCartStore = defineStore('cart', () => {
+  const { addNotification } = useNotificationStore()
   const cart = reactive({
     items: [],
     total: 0,
@@ -10,16 +12,19 @@ export const useCartStore = defineStore('cart', () => {
   })
 
   const addToCart = (item, quantity) => {
-    const { name, sku, price, discount } = item
+    const { name, images, sku, price, discount } = item
 
     cart.items.push({
       name,
+      image: images[0],
       sku,
       discount,
       original_price: price,
       price_with_discount: calculateDiscount(price, discount),
       quantity,
     })
+
+    addNotification(`${name} Added to Cart!`)
   }
 
   function recalculateCartTotal() {

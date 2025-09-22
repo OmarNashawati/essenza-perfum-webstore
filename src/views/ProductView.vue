@@ -5,25 +5,36 @@ import { calculateDiscount } from '@/utiles/money'
 import PrimeButton from '@/components/PrimeButton.vue'
 import { useCartStore } from '@/stores/cartStore'
 import { ref } from 'vue'
+
 const cart = useCartStore()
 const route = useRoute()
 
-let perfum = getPerfum(route.params.id)
-let quantity = ref('1')
+const perfum = getPerfum(route.params.id)
+const quantity = ref('1')
+
+const productsImages = import.meta.glob('../assets/products/*.jpg', {
+  eager: true,
+})
+const getProductImage = (img) => {
+  return productsImages[`../assets/products/${img}`]?.default
+}
+
+const currentImage = ref(perfum.images[0])
 </script>
 
 <template>
-  <section class="product-wrapper">
+  <section class="product-wrapper container">
     <div class="gallery">
-      <div class="main-img">
-        <img src="@/assets/empty-image.png" alt="" />
-      </div>
       <div class="sub-images">
         <img
+          @click="currentImage = image"
           v-for="image in perfum.images"
-          src="@/assets/empty-image.png"
+          :src="getProductImage(image)"
           alt=""
         />
+      </div>
+      <div class="main-img">
+        <img :src="getProductImage(currentImage)" alt="" />
       </div>
     </div>
 
@@ -100,17 +111,16 @@ let quantity = ref('1')
   .gallery {
     width: 50%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: var(--space-2);
 
-    @media (max-width: 1024px) {
+    @media (max-width: 700px) {
       width: 100%;
       flex-direction: column;
     }
 
     .main-img {
       width: 100%;
-      @media (max-width: 1024px) {
-      }
       img {
         width: 100%;
         object-fit: fill;
@@ -118,10 +128,19 @@ let quantity = ref('1')
     }
 
     .sub-images {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-1);
+      width: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+
+      @media (max-width: 700px) {
+        flex-direction: row;
+        order: 2;
+      }
+
+      img {
+        cursor: pointer;
+      }
     }
   }
 
@@ -182,8 +201,6 @@ let quantity = ref('1')
         align-items: center;
         gap: var(--space-2);
         margin-top: var(--space-4);
-        label {
-        }
 
         select {
           background-color: var(--surface);

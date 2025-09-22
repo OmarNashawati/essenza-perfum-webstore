@@ -6,10 +6,17 @@ import PrimeButton from '@/components/PrimeButton.vue'
 import PaymentSummary from '@/components/PaymentSummary.vue'
 const router = useRouter()
 const cart = useCartStore()
+
+const productsImages = import.meta.glob('../assets/products/*.jpg', {
+  eager: true,
+})
+const getProductImage = (img) => {
+  return productsImages[`../assets/products/${img}`]?.default
+}
 </script>
 
 <template>
-  <section class="cart-section">
+  <section class="cart-section container">
     <div class="summary" v-if="cart.cart.items.length > 0">
       <div class="cart-summary">
         <h2>Cart Summary</h2>
@@ -19,7 +26,7 @@ const cart = useCartStore()
           :key="cartItem.sku"
         >
           <div class="image">
-            <img src="@/assets/empty-image.png" alt="" />
+            <img :src="getProductImage(cartItem.image)" alt="" />
           </div>
           <div class="details">
             <div class="upper-row">
@@ -81,8 +88,9 @@ const cart = useCartStore()
 
 <style lang="scss" scoped>
 .cart-section {
-  padding: var(--space-8);
-  min-height: 500px;
+  width: 100%;
+  flex: 1;
+  padding: var(--space-4);
 }
 
 .summary {
