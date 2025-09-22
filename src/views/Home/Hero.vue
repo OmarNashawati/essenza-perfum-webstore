@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import { homeContent } from '@/assets/data/HomeContent'
+import { homeContent } from '@/assets/data/UI/HomeContent'
 import PrimeButton from '@/components/PrimeButton.vue'
 
 const router = useRouter()

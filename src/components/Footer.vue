@@ -1,5 +1,5 @@
 <script setup>
-import { footerContact } from '@/assets/data/FooterContent'
+import { footerContact } from '@/assets/data/UI/FooterContent'
 </script>
 
 <template>

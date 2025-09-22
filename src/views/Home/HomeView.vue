@@ -1,6 +1,6 @@
 <script setup>
 import { getPerfumes } from '@/services/productService'
-import { homeContent } from '@/assets/data/HomeContent'
+import { homeContent } from '@/assets/data/UI/HomeContent'
 
 import Hero from './Hero.vue'
 import Categories from './Categories.vue'
