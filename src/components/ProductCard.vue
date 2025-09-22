@@ -13,15 +13,21 @@ const cart = useCartStore()
   <div @click="router.push(`/products/${product.sku}`)" class="product-card">
     <div class="image">
       <img src="@/assets/empty-image.png" alt="" srcset="" />
+      <div v-if="product.discount > 0" class="discount">
+        {{ product.discount }}% OFF
+      </div>
     </div>
 
     <div class="body">
-      <p class="name">{{ product.name }}</p>
-      <p class="release-year">{{ product.release_year }}</p>
+      <div>
+        <p class="brand">{{ product.brand }}</p>
+        <p class="name">{{ product.name }}</p>
+        <p class="type">{{ product.tags[0] }}</p>
+      </div>
       <div>
         <div>
           <div class="price-container">
-            <p class="price">
+            <p class="price" :class="{ red: product.discount > 0 }">
               ${{ calculateDiscount(product.price, product.discount) }}
             </p>
             <p v-if="product.discount > 0" class="original-price">
@@ -29,10 +35,6 @@ const cart = useCartStore()
             </p>
           </div>
         </div>
-
-        <PrimeButton @click.stop="cart.addToCart(product, '1')">
-          Add to Cart
-        </PrimeButton>
       </div>
     </div>
   </div>
@@ -52,6 +54,19 @@ const cart = useCartStore()
   .image {
     overflow: hidden;
     max-height: auto;
+    position: relative;
+
+    .discount {
+      position: absolute;
+      top: var(--space-2);
+      right: var(--space-2);
+      background: rgba(0, 0, 0, 0.1);
+      padding: var(--space-2) var(--space-4);
+      border-radius: 25px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--danger);
+    }
   }
 
   &:hover img {
@@ -61,12 +76,26 @@ const cart = useCartStore()
   .body {
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: space-between;
     height: 150px;
     padding: var(--space-2);
+    text-align: center;
+
+    .brand {
+      font-weight: 800;
+      font-size: 1rem;
+      text-transform: uppercase;
+    }
 
     .name {
+      font-size: 0.9rem;
+    }
+
+    .type {
+      margin-top: var(--space-2);
       font-size: 1rem;
+      color: var(--text-soft);
     }
 
     .price-container {
@@ -82,8 +111,12 @@ const cart = useCartStore()
 
       .price {
         font-size: 1.3rem;
-        font-weight: 600;
+        font-weight: 700;
         margin-bottom: var(--space-1);
+
+        &.red {
+          color: var(--danger);
+        }
       }
     }
   }
