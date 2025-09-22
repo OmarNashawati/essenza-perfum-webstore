@@ -2,16 +2,15 @@
 
 button {
   background: none;
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   font-weight: 700;
   cursor: pointer;
 }
 
-.but-icon {
+.button-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
   border-radius: 0.5rem;
   color: var(--text);
 }
@@ -55,7 +54,7 @@ select {
 }
 
 ::-webkit-scrollbar {
-  /* display: none; */
+  display: none;
   width: 8px;
 }
 

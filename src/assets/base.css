@@ -57,14 +57,14 @@
 }
 
 [data-theme='light'] {
-  --primary: var(--gold-50);
+  --primary: var(--white);
   --secondary: var(--gray-900);
   --on-secondary: var(--gold-50);
   --accent: var(--gold-900);
   --on-accent: var(--white);
   --on-accent-hover: var(--gold-1100);
 
-  --bg: var(--gold-50);
+  --bg: var(--white);
   --text: var(--gray-900);
   --text-heading: var(--gold-1900);
   --text-soft: var(--gray-500);

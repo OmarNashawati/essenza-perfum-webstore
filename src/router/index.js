@@ -10,22 +10,27 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'home',
       component: HomeView,
     },
     {
-      path: '/products',
+      path: '/products/:category?',
+      name: 'products',
       component: ProductsView,
     },
     {
       path: '/products/:id',
+      name: 'product',
       component: ProductView,
     },
     {
       path: '/cart',
+      name: 'cart',
       component: SummaryView,
     },
     {
       path: '/checkout',
+      name: 'checkout',
       component: CheckoutView,
     },
   ],
