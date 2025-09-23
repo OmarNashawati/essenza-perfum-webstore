@@ -14,7 +14,25 @@ const cart = useCartStore().cart
   <header>
     <div class="top-bar">
       <div class="container">
-        <p>Free delivery on all orders above 299$</p>
+        <div class="inner">
+          <div class="page-language">
+            <a href=""><span class="pi pi-language"></span> EN</a>
+            <a href=""><span class="pi pi-globe"></span> USA</a>
+          </div>
+
+          <p>Free delivery on all orders above 299$</p>
+          <div class="login-links">
+            <a href="">Track Order</a>
+            |
+            <a href="">Contact Us</a>
+            |
+            <div>
+              <a href="">Login</a>
+              /
+              <a href="">Register</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -23,12 +41,21 @@ const cart = useCartStore().cart
         <div @click="router.push('/')" class="logo">
           <img src="@/assets/logo.svg" alt="Essenza Logo" />
         </div>
+
+        <div class="search-bar">
+          <i class="pi pi-search icon"></i>
+          <input type="text" placeholder="Search beauty, brands and more.." />
+        </div>
+
         <div class="buttons">
-          <button @click="router.push('/cart')" class="button-icon cart-button">
+          <button class="search-button">
+            <i class="pi pi-search"></i>
+          </button>
+          <button @click="router.push('/cart')" class="cart-button">
             <i class="pi pi-shopping-bag"></i>
             <span class="cart-items-counter">{{ cart.items.length }}</span>
           </button>
-          <button @click="store.toggleTheme()" class="button-icon">
+          <button @click="store.toggleTheme()">
             <i
               class="pi"
               :class="store.activeTheme === 'dark' ? 'pi-sun' : 'pi-moon'"
@@ -63,11 +90,35 @@ header {
   .top-bar {
     background-color: var(--secondary);
 
-    p {
+    .inner {
+      display: flex;
+      align-items: center;
       color: var(--on-secondary);
-      text-align: center;
-      font-size: 0.9rem;
       padding: var(--space-2) var(--space-4);
+
+      a {
+        color: inherit;
+        font-weight: 600;
+        &:hover {
+          color: var(--accent);
+        }
+      }
+
+      p {
+        flex: 1;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+
+      .page-language {
+        display: flex;
+        gap: var(--space-4);
+      }
+
+      .login-links {
+        display: flex;
+        gap: var(--space-2);
+      }
     }
   }
 
@@ -75,23 +126,61 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: var(--space-8);
     padding: var(--space-2) var(--space-4);
     .logo {
       height: 3.5rem;
       cursor: pointer;
     }
 
+    .search-bar {
+      flex: 1;
+      max-width: 700px;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border-gold);
+      display: flex;
+      align-items: center;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
+
+      .icon {
+        padding: var(--space-3);
+      }
+
+      input {
+        background: none;
+        padding-left: 0;
+      }
+    }
+
     .buttons {
       display: flex;
       gap: var(--space-2);
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+        color: var(--text);
+      }
+
+      .search-button {
+        display: none;
+        @media (max-width: 768px) {
+          display: initial;
+        }
+      }
 
       .cart-button {
         position: relative;
 
         .cart-items-counter {
           position: absolute;
-          top: 50%;
-          left: var(--space-2);
+          bottom: 0;
+          left: 0;
 
           display: flex;
           align-items: center;
@@ -100,7 +189,7 @@ header {
           background-color: var(--accent);
           color: var(--on-accent);
           font-size: 0.9rem;
-          border-radius: 100%;
+          border-radius: 50%;
           height: 20px;
           width: 20px;
         }
