@@ -14,17 +14,19 @@ export const useCartStore = defineStore('cart', () => {
   const addToCart = (item, quantity) => {
     const { name, images, sku, price, discount } = item
 
-    cart.items.push({
-      name,
-      image: images[0],
-      sku,
-      discount,
-      original_price: price,
-      price_with_discount: calculateDiscount(price, discount),
-      quantity,
-    })
+    if (item.availability) {
+      cart.items.push({
+        name,
+        image: images[0],
+        sku,
+        discount,
+        original_price: price,
+        price_with_discount: calculateDiscount(price, discount),
+        quantity,
+      })
 
-    addNotification(`${name} Added to Cart!`)
+      addNotification(`${name} Added to Cart!`)
+    } else addNotification(`This Product Not Available`, 'error')
   }
 
   function recalculateCartTotal() {

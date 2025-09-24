@@ -30,6 +30,7 @@ const currentImage = ref(perfum.images[0])
           @click="currentImage = image"
           v-for="image in perfum.images"
           :src="getProductImage(image)"
+          :class="{ 'current-image': currentImage === image }"
           alt=""
         />
       </div>
@@ -39,36 +40,25 @@ const currentImage = ref(perfum.images[0])
     </div>
 
     <div class="product-info">
-      <h2>{{ perfum.name }}</h2>
-      <div class="price-container">
-        <p class="price">
-          ${{ calculateDiscount(perfum.price, perfum.discount) }}
-        </p>
-        <p class="original">${{ perfum.price }}</p>
+      <p class="brand">{{ perfum.brand }}</p>
+
+      <div>
+        <p class="name">{{ perfum.name }}</p>
+        <p class="concentration">{{ perfum.concentration }}</p>
       </div>
+
       <p :class="perfum.availability ? 'in-stock' : 'sold-out'">
         <i v-if="perfum.availability" class="pi pi-check"></i>
         {{ perfum.availability ? 'In Stock' : 'Sold out ' }}
       </p>
-      <p>{{ perfum.description }}</p>
 
-      <div class="info-table">
-        <p>Release Year</p>
-        <p>{{ perfum.release_year }}</p>
+      <p class="description">{{ perfum.description }}</p>
 
-        <p>Rating</p>
-        <p>{{ perfum.rating }}</p>
-
-        <p>Sex</p>
-        <p>{{ perfum.sex }}</p>
-
-        <p>Concentration</p>
-        <p>{{ perfum.concentration }}</p>
-
-        <p>tags</p>
-        <div class="tags">
-          <p class="tag" v-for="tag in perfum.tags">{{ tag }}</p>
-        </div>
+      <div class="price-container">
+        <p class="price">
+          ${{ calculateDiscount(perfum.price, perfum.discount) }}
+        </p>
+        <p v-if="perfum.discount" class="original">${{ perfum.price }}</p>
       </div>
 
       <div class="add-to-card">
@@ -92,6 +82,25 @@ const currentImage = ref(perfum.images[0])
           </select>
         </div>
       </div>
+
+      <div class="info-table">
+        <p>Release Year</p>
+        <p>{{ perfum.release_year }}</p>
+
+        <p>Rating</p>
+        <p>{{ perfum.rating }} | ({{ perfum.rating_count }})</p>
+
+        <p>Sex</p>
+        <p>{{ perfum.sex }}</p>
+
+        <p>Concentration</p>
+        <p>{{ perfum.concentration }}</p>
+
+        <p>tags</p>
+        <div class="tags">
+          <p class="tag" v-for="tag in perfum.tags">{{ tag }}</p>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -103,24 +112,24 @@ const currentImage = ref(perfum.images[0])
   gap: var(--space-8);
   padding: var(--space-8);
 
-  @media (max-width: 1024px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
   }
 
   .gallery {
-    width: 50%;
     display: flex;
     flex-direction: row;
     gap: var(--space-2);
 
-    @media (max-width: 700px) {
+    @media (max-width: 768px) {
       width: 100%;
       flex-direction: column;
     }
 
     .main-img {
       width: 100%;
+      max-width: 1000px;
       img {
         width: 100%;
         object-fit: fill;
@@ -128,18 +137,28 @@ const currentImage = ref(perfum.images[0])
     }
 
     .sub-images {
-      width: 100px;
       display: flex;
       flex-direction: column;
       gap: var(--space-2);
+      overflow: auto;
+      width: auto;
 
-      @media (max-width: 700px) {
+      @media (max-width: 768px) {
         flex-direction: row;
         order: 2;
+        width: 100%;
       }
 
       img {
+        width: 100px;
+        height: 100px;
+        opacity: 0.5;
+        border: 1px solid transparent;
         cursor: pointer;
+      }
+      .current-image {
+        border: 1px solid var(--accent);
+        opacity: 1;
       }
     }
   }
@@ -147,13 +166,32 @@ const currentImage = ref(perfum.images[0])
   .product-info {
     display: flex;
     flex-direction: column;
+    gap: var(--space-2);
+    max-width: 400px;
+
+    .brand {
+      font-weight: 700;
+      font-size: 2rem;
+      text-transform: uppercase;
+    }
+
+    .name {
+      font-weight: 300;
+      font-size: 2rem;
+    }
+
+    .concentration {
+      color: var(--text-soft);
+      font-size: 1.3rem;
+    }
 
     .price-container {
       display: flex;
       gap: var(--space-2);
+      margin: var(--space-8) 0;
 
       .price {
-        font-size: 1.3rem;
+        font-size: 2.5rem;
         font-weight: 600;
       }
       .original {
@@ -161,6 +199,10 @@ const currentImage = ref(perfum.images[0])
         text-decoration: line-through;
         color: crimson;
       }
+    }
+
+    .description {
+      font-size: 1.2rem;
     }
 
     .in-stock {
@@ -174,6 +216,7 @@ const currentImage = ref(perfum.images[0])
     .info-table {
       // border-top: 1px solid var(--border);
       margin-top: var(--space-8);
+
       display: grid;
       gap: var(--space-2);
       grid-template-columns: repeat(2, 1fr);
@@ -194,8 +237,6 @@ const currentImage = ref(perfum.images[0])
     }
 
     .add-to-card {
-      margin-top: var(--space-8);
-
       .quantity {
         display: flex;
         align-items: center;

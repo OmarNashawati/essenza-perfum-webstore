@@ -12,19 +12,44 @@ import Brands from '@/components/Brands.vue'
   <Hero />
 
   <div class="container">
-    <Categories />
+    <div class="main">
+      <Categories />
 
-    <Brands />
+      <Brands />
 
-    <ProductSection
-      v-for="section in homeContent.sections"
-      layout="row"
-      :key="section.id"
-      :id="section.id"
-      :title="section.title"
-      :products-list="getPerfumes({ tags: [section.products] })"
-    />
+      <section class="banners-section">
+        <div class="banner">
+          <img src="../../assets/banners/banner_1.png" alt="" />
+        </div>
+        <div class="banner">
+          <img src="../../assets/banners/banner_2.png" alt="" />
+        </div>
+        <div class="banner">
+          <img src="../../assets/banners/banner_4.png" alt="" />
+        </div>
+      </section>
+
+      <ProductSection
+        v-for="section in homeContent.sections"
+        layout="row"
+        :key="section.id"
+        :id="section.id"
+        :title="section.title"
+        :products-list="getPerfumes({ tags: [section.products] })"
+      />
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.banners-section {
+  margin: var(--space-8) 0;
+  .banner {
+  }
+}
+</style>

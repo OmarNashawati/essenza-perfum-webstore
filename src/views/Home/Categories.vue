@@ -23,7 +23,7 @@ import { getCategories } from '@/services/categoriesService'
 
 <style lang="scss" scoped>
 .categories-wrapper {
-  padding: var(--space-8) var(--space-2);
+  padding: var(--space-8) 0;
 
   .categories-grid {
     display: flex;

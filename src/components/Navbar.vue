@@ -113,11 +113,18 @@ header {
       .page-language {
         display: flex;
         gap: var(--space-4);
+
+        @media (max-width: 768px) {
+          display: none;
+        }
       }
 
       .login-links {
         display: flex;
         gap: var(--space-2);
+        @media (max-width: 768px) {
+          display: none;
+        }
       }
     }
   }

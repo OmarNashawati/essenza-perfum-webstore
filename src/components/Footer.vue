@@ -10,11 +10,17 @@ import { footerContact } from '@/assets/data/UI/FooterContent'
           <img src="@/assets/logo.svg" alt="Essenza Logo" />
         </div>
 
+        <div class="language-country-div">
+          <span class="pi pi-language"></span> Language preferences:
+          <a href="">EN</a>
+          <a href="">USA</a>
+        </div>
+
         <div class="footer-col">
           <h2>Support</h2>
-          <a v-for="link in footerContact.links.support" :href="link.url">{{
-            link.name
-          }}</a>
+          <a v-for="link in footerContact.links.support" :href="link.url">
+            {{ link.name }}</a
+          >
         </div>
 
         <div class="footer-col">
@@ -48,6 +54,13 @@ footer {
   padding: var(--space-8) var(--space-8);
   gap: var(--space-4);
 
+  a {
+    color: var(--text);
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   @media (max-width: 756px) {
     flex-direction: column;
     align-items: center;
@@ -71,8 +84,17 @@ footer {
   .social-links {
     gap: var(--space-4);
     font-size: 1.5rem;
+    order: 2;
     @media (max-width: 756px) {
       flex-direction: row;
+    }
+  }
+
+  .language-country-div {
+    display: none;
+    gap: 10px;
+    @media (max-width: 756px) {
+      display: flex;
     }
   }
 }

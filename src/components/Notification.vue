@@ -13,7 +13,9 @@ const { notifications } = storeToRefs(store)
         class="notification-card"
         :class="n.type"
       >
-        <i class="pi pi-check"></i>
+        <i v-if="n.type === 'success'" class="pi pi-check"></i>
+        <i v-if="n.type === 'error'" class="pi pi-ban"></i>
+        <i v-if="n.type === 'warn'" class="pi pi-exclamation-circle"></i>
         <p>{{ n.message }}</p>
       </div>
     </transition-group>

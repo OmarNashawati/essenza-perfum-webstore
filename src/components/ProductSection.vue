@@ -64,7 +64,8 @@ function scroll(direction) {
 
 <style lang="scss" scoped>
 .product-section-wrapper {
-  padding: var(--space-4) var(--space-2);
+  width: 100%;
+  padding: var(--space-4) 0;
 
   .header {
     display: flex;

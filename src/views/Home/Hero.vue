@@ -24,8 +24,12 @@ const router = useRouter()
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 500px;
+  height: 100vh;
   text-align: center;
+  background: url('../../assets/hero/hero.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   .hero-contant {
     max-width: 70%;
@@ -38,11 +42,12 @@ const router = useRouter()
 
     .title {
       font-size: clamp(1rem, 20vw, 4rem);
+      color: var(--white);
     }
 
     .sub-title {
       font-size: 1rem;
-      color: var(--text-soft);
+      color: var(--white);
     }
 
     .hero-btn {
