@@ -49,14 +49,12 @@ const getProductImage = (img) => {
 
 <style lang="scss" scoped>
 .product-card {
-  flex: 0 0 280px;
+  width: 100%;
   border-radius: 0.4rem;
   overflow: hidden;
   cursor: pointer;
   box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.1);
 
-  @media (max-width: 576px) {
-  }
   .image {
     overflow: hidden;
     max-height: auto;

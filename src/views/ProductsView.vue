@@ -1,75 +1,54 @@
 <script setup>
-import ProductSection from '@/components/ProductSection.vue'
-
-import { getCategories } from '@/services/categoriesService'
+import Filter from '@/components/Filter.vue'
+import ProductsGrid from '@/components/ProductsGrid.vue'
+import { useRoute } from 'vue-router'
 import { useProductsStore } from '@/stores/productstore'
+import { onMounted, watch } from 'vue'
 
-const productStore = useProductsStore()
-const minPrice = productStore.minPrice
-const maxPrice = productStore.maxPrice
-const brands = productStore.brands()
+const route = useRoute()
+const store = useProductsStore()
+
+const applyFilter = () => {
+  if (route.query.category) {
+    store.setFilter({ categories: [route.query.category] })
+  }
+}
+
+onMounted(() => {
+  applyFilter()
+})
+
+watch(route, () => applyFilter())
 </script>
 
 <template>
-  <div class="products-view-warpper">
-    <section class="filter-section">
-      <h2>Filter</h2>
-      <div class="filters">
-        <div class="filter">
-          <div class="search-input">
-            <i class="pi pi-search icon"></i>
-            <input class="search-input" type="text" placeholder="Search" />
-          </div>
-        </div>
-        <div class="filter">
-          <h3>Filter by Price</h3>
-          <label for="">
-            {{ minPrice }}
-            <input
-              type="range"
-              :min="minPrice"
-              :max="maxPrice"
-              v-model="productStore.filter.maxPrice"
-            />
-            {{ productStore.filter.maxPrice }}
-          </label>
-        </div>
-        <div class="filter">
-          <h3>Filter by category</h3>
-          <label
-            v-for="category in getCategories()"
-            :key="category.id"
-            :for="category.id"
-          >
-            <input
-              :id="category.id"
-              type="checkbox"
-              :value="category.name"
-              v-model="productStore.filter.categories"
-            />
-            {{ category.name }}
-          </label>
-        </div>
-        <div class="filter">
-          <h3>Filter by Brand</h3>
-          <label v-for="brand in brands" :key="brand" :for="brand">
-            <input
-              :id="brand"
-              type="checkbox"
-              :value="brand"
-              v-model="productStore.filter.brands"
-            />
-            {{ brand }}
-          </label>
+  <div class="products-view-warpper container">
+    <div class="filter-warp">
+      <Filter />
+    </div>
+
+    <div class="mian-wrap">
+      <div class="header">
+        <h2 class="section-title">Products</h2>
+        <div>
+          Sort by
+          <select v-model="store.filter.sort" name="sort-options" id="">
+            <option value="" disabled>Select an option</option>
+            <option value="newest">Newest to Latest</option>
+            <option value="priceLowHigh">Price: Low to High</option>
+            <option value="priceHighLow">Price: High to Low</option>
+            <option value="AtoZ">A-Z</option>
+            <option value="ZtoA">Z-A</option>
+          </select>
         </div>
       </div>
-    </section>
 
-    <ProductSection
-      title="Products"
-      :products-list="productStore.filteredProducts"
-      layout="grid"
-    />
+      <ProductsGrid
+        title="Products"
+        :products-list="store.filteredProducts"
+        layout="grid"
+      />
+    </div>
   </div>
 </template>
 
@@ -80,29 +59,17 @@ const brands = productStore.brands()
   padding: var(--space-8);
 }
 
-.filter-section {
-  background: var(--surface);
-  min-width: 250px;
-  border-radius: 0.5rem;
-  padding: var(--space-4);
-
-  .filters {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-
-    .filter {
-      display: flex;
-      flex-direction: column;
-    }
+.filter-warp {
+  @media (max-width: 765px) {
+    display: none;
   }
 }
 
-.search-input {
-  display: flex;
-  align-items: center;
-  border-radius: 0.5rem;
-  background: var(--bg);
-  padding: var(--space-2);
+.main-wrap {
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 </style>

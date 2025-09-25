@@ -10,24 +10,19 @@ const cart = useCartStore()
     <h2 class="title">Payment Summary</h2>
     <div class="body">
       <div class="info">
-        <p>Items</p>
-        <i>
-          {{
-            cart.cart.items.reduce(
-              (acc, cartItem) => acc + Number(cartItem.quantity),
-              0
-            )
-          }}
-        </i>
-
-        <p>Totla</p>
+        <p>Subtotal</p>
         <i>${{ cart.cart.total }}</i>
 
-        <p>discounted</p>
-        <i>${{ formatMoney(cart.cart.discount_total) }}</i>
+        <p>Savings & Discounts</p>
+        <i class="--green-text"
+          >- ${{ formatMoney(cart.cart.total - cart.cart.discount_total) }}</i
+        >
 
-        <p>Saved</p>
-        <i>${{ formatMoney(cart.cart.total - cart.cart.discount_total) }}</i>
+        <p>sheping</p>
+        <i>$ {{ cart.deliveryCoast() }}</i>
+
+        <p class="total">Total <span>(Inc. 15% VAT)</span></p>
+        <i class="total">${{ formatMoney(cart.cart.discount_total) }}</i>
       </div>
       <slot>
         <!-- Button Slot -->
@@ -38,7 +33,7 @@ const cart = useCartStore()
 
 <style lang="scss" scoped>
 .payment-summary {
-  width: 250px;
+  width: 350px;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -52,7 +47,7 @@ const cart = useCartStore()
     display: flex;
     border-radius: 0.5rem;
     flex-direction: column;
-    background-color: var(--surface);
+    // background-color: var(--gold-50);
     padding: var(--space-4);
     gap: var(--space-4);
   }
@@ -60,9 +55,17 @@ const cart = useCartStore()
   .info {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-
+    row-gap: var(--space-2);
     i {
       text-align: end;
+    }
+
+    .total {
+      font-size: 1.2rem;
+      font-weight: 600;
+      span {
+        font-size: 0.8rem;
+      }
     }
   }
 }

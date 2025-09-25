@@ -34,7 +34,7 @@ input[type='date'] {
   padding: var(--space-3) var(--space-5);
   border-radius: 0.5rem;
   width: 100%;
-  background-color: var(--surface);
+  background-color: var(--gray-50);
 }
 
 input[type='textarea'] {
@@ -70,4 +70,12 @@ select {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #555;
+}
+
+.--green-text {
+  color: green;
+}
+
+.--red-text {
+  color: crimson;
 }

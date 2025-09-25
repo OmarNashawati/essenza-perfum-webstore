@@ -1,28 +1,48 @@
 import { defineStore } from 'pinia'
-import { computed, reactive } from 'vue'
+import { computed, ref } from 'vue'
 
 import { getPerfumes } from '@/services/productService'
 
 export const useProductsStore = defineStore('products', () => {
-  const minPrice = Math.min(...getPerfumes().map((p) => p.price))
-  const maxPrice = Math.max(...getPerfumes().map((p) => p.price))
-  const filter = reactive({ maxPrice, sort: '', categories: [], brands: [] })
-  const products = reactive(getPerfumes())
+  const products = ref(getPerfumes())
+
+  const minPrice = Math.min(...products.value.map((p) => p.price))
+  const maxPrice = Math.max(...products.value.map((p) => p.price))
+  const filter = ref({
+    maxPrice,
+    sort: '',
+    categories: [],
+    brands: [],
+    search: '',
+  })
+
+  const setFilter = (newFilter) => {
+    filter.value = { ...filter.value, ...newFilter }
+  }
 
   const filteredProducts = computed(() => {
-    let result = products
-    if (filter.maxPrice) {
-      result = products.filter((product) => product.price <= filter.maxPrice)
-    }
+    let result = products.value
 
-    if (filter.categories.length) {
-      result = products.filter((product) =>
-        product.tags.includes(filter.categories)
+    if (filter.value.categories.length > 0) {
+      result = result.filter((product) =>
+        product.tags.some((x) => filter.value.categories.includes(x))
       )
     }
 
-    if (filter.sort) {
-      switch (filter.sort) {
+    if (filter.value.brands.length > 0) {
+      result = result.filter((product) =>
+        filter.value.brands.includes(product.brand)
+      )
+    }
+
+    if (filter.value.maxPrice) {
+      result = result.filter(
+        (product) => product.price <= filter.value.maxPrice
+      )
+    }
+
+    if (filter.value.sort) {
+      switch (filter.value.sort) {
         case 'newest':
           result.sort((a, b) => b.release_year - a.release_year)
           break
@@ -43,15 +63,12 @@ export const useProductsStore = defineStore('products', () => {
       }
     }
 
-    if (filter.brands.lenght) {
-    }
-
     return result
   })
 
   const brands = () => {
     const result = []
-    products.forEach((product) => {
+    products.value.forEach((product) => {
       if (!result.includes(product.brand)) {
         result.push(product.brand)
       }
@@ -59,11 +76,23 @@ export const useProductsStore = defineStore('products', () => {
     return result
   }
 
+  const clearFilter = () => {
+    filter.value = {
+      maxPrice,
+      sort: '',
+      categories: [],
+      brands: [],
+      search: '',
+    }
+  }
+
   return {
     maxPrice,
     minPrice,
     brands,
     filter,
+    setFilter,
     filteredProducts,
+    clearFilter,
   }
 })

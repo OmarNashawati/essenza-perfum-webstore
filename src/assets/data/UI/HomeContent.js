@@ -6,7 +6,7 @@ export const homeContent = {
     cta: { text: 'Shop Now', url: '/shop' },
     image: 'https://shop.com/images/hero-banner.jpg',
   },
-  sections: [
+  carousels: [
     {
       id: 'best-sellers',
       title: 'Best Sellers',

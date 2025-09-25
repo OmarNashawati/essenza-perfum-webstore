@@ -12,11 +12,12 @@ export const useCartStore = defineStore('cart', () => {
   })
 
   const addToCart = (item, quantity) => {
-    const { name, images, sku, price, discount } = item
+    const { name, brand, images, sku, price, discount } = item
 
     if (item.availability) {
       cart.items.push({
         name,
+        brand,
         image: images[0],
         sku,
         discount,
@@ -43,6 +44,13 @@ export const useCartStore = defineStore('cart', () => {
     )
   }
 
+  const deliveryCoast = () => {
+    if (cart.total >= 250) {
+      return 'Free'
+    }
+    return '35'
+  }
+
   const removeFromCart = (item) => {
     const itemToRemove = cart.items.findIndex(
       (cartItem) => cartItem.sku === item.sku
@@ -52,5 +60,11 @@ export const useCartStore = defineStore('cart', () => {
       cart.items.splice(itemToRemove, 1)
     }
   }
-  return { cart, addToCart, removeFromCart, recalculateCartTotal }
+  return {
+    cart,
+    addToCart,
+    removeFromCart,
+    recalculateCartTotal,
+    deliveryCoast,
+  }
 })

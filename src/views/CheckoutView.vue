@@ -8,7 +8,7 @@ const router = useRouter()
 </script>
 
 <template>
-  <section class="checkout-section">
+  <section class="checkout-section container">
     <div class="forms">
       <form class="shipping-form">
         <h1>Delivery Address</h1>
@@ -54,6 +54,7 @@ const router = useRouter()
   }
 
   .forms {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: var(--space-8);

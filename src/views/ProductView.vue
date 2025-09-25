@@ -5,12 +5,14 @@ import { calculateDiscount } from '@/utiles/money'
 import PrimeButton from '@/components/PrimeButton.vue'
 import { useCartStore } from '@/stores/cartStore'
 import { ref } from 'vue'
+import NotFound from './NotFound.vue'
 
 const cart = useCartStore()
 const route = useRoute()
 
 const perfum = getPerfum(route.params.id)
 const quantity = ref('1')
+const currentImage = ref(null)
 
 const productsImages = import.meta.glob('../assets/products/*.jpg', {
   eager: true,
@@ -19,11 +21,13 @@ const getProductImage = (img) => {
   return productsImages[`../assets/products/${img}`]?.default
 }
 
-const currentImage = ref(perfum.images[0])
+if (perfum) {
+  currentImage.value = perfum.images[0]
+}
 </script>
 
 <template>
-  <section class="product-wrapper container">
+  <section v-if="perfum" class="product-wrapper container">
     <div class="gallery">
       <div class="sub-images">
         <img
@@ -103,6 +107,8 @@ const currentImage = ref(perfum.images[0])
       </div>
     </div>
   </section>
+
+  <NotFound v-else />
 </template>
 
 <style lang="scss" scoped>

@@ -73,7 +73,9 @@ const cart = useCartStore().cart
             @click="
               router.push({
                 name: 'products',
-                params: { category: category.slug },
+                query: {
+                  category: category.name,
+                },
               })
             "
           >

@@ -4,8 +4,9 @@ import { homeContent } from '@/assets/data/UI/HomeContent'
 
 import Hero from './Hero.vue'
 import Categories from './Categories.vue'
-import ProductSection from '@/components/ProductSection.vue'
 import Brands from '@/components/Brands.vue'
+import Carousel from '@/components/Carousel.vue'
+import ProductCard from '@/components/ProductCard.vue'
 </script>
 
 <template>
@@ -29,13 +30,10 @@ import Brands from '@/components/Brands.vue'
         </div>
       </section>
 
-      <ProductSection
-        v-for="section in homeContent.sections"
-        layout="row"
-        :key="section.id"
-        :id="section.id"
-        :title="section.title"
-        :products-list="getPerfumes({ tags: [section.products] })"
+      <Carousel
+        v-for="c in homeContent.carousels"
+        :title="c.title"
+        :products="getPerfumes({ tags: c.title })"
       />
     </div>
   </div>
@@ -45,11 +43,10 @@ import Brands from '@/components/Brands.vue'
 .main {
   display: flex;
   flex-direction: column;
+  padding: var(--space-8);
 }
 
 .banners-section {
   margin: var(--space-8) 0;
-  .banner {
-  }
 }
 </style>
