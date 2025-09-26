@@ -1,11 +1,12 @@
 <script setup>
-import { getPerfum } from '@/services/productService'
+import { getPerfum, getPerfumes } from '@/services/productService'
 import { useRoute } from 'vue-router'
 import { calculateDiscount } from '@/utiles/money'
 import PrimeButton from '@/components/PrimeButton.vue'
 import { useCartStore } from '@/stores/cartStore'
 import { ref } from 'vue'
 import NotFound from './NotFound.vue'
+import Carousel from '@/components/Carousel.vue'
 
 const cart = useCartStore()
 const route = useRoute()
@@ -27,88 +28,97 @@ if (perfum) {
 </script>
 
 <template>
-  <section v-if="perfum" class="product-wrapper container">
-    <div class="gallery">
-      <div class="sub-images">
-        <img
-          @click="currentImage = image"
-          v-for="image in perfum.images"
-          :src="getProductImage(image)"
-          :class="{ 'current-image': currentImage === image }"
-          alt=""
-        />
-      </div>
-      <div class="main-img">
-        <img :src="getProductImage(currentImage)" alt="" />
-      </div>
-    </div>
-
-    <div class="product-info">
-      <p class="brand">{{ perfum.brand }}</p>
-
-      <div>
-        <p class="name">{{ perfum.name }}</p>
-        <p class="concentration">{{ perfum.concentration }}</p>
+  <div class="container">
+    <section v-if="perfum" class="product-wrapper">
+      <div class="gallery">
+        <div class="sub-images">
+          <img
+            @click="currentImage = image"
+            v-for="image in perfum.images"
+            :src="getProductImage(image)"
+            :class="{ 'current-image': currentImage === image }"
+            alt=""
+          />
+        </div>
+        <div class="main-img">
+          <img :src="getProductImage(currentImage)" alt="" />
+        </div>
       </div>
 
-      <p :class="perfum.availability ? 'in-stock' : 'sold-out'">
-        <i v-if="perfum.availability" class="pi pi-check"></i>
-        {{ perfum.availability ? 'In Stock' : 'Sold out ' }}
-      </p>
+      <div class="product-info">
+        <p class="brand">{{ perfum.brand }}</p>
 
-      <p class="description">{{ perfum.description }}</p>
+        <div>
+          <p class="name">{{ perfum.name }}</p>
+          <p class="concentration">{{ perfum.concentration }}</p>
+        </div>
 
-      <div class="price-container">
-        <p class="price">
-          ${{ calculateDiscount(perfum.price, perfum.discount) }}
+        <p :class="perfum.availability ? 'in-stock' : 'sold-out'">
+          <i v-if="perfum.availability" class="pi pi-check"></i>
+          {{ perfum.availability ? 'In Stock' : 'Sold out ' }}
         </p>
-        <p v-if="perfum.discount" class="original">${{ perfum.price }}</p>
-      </div>
 
-      <div class="add-to-card">
-        <PrimeButton @click="cart.addToCart(perfum, quantity)"
-          >Add To Cart</PrimeButton
-        >
+        <p class="description">{{ perfum.description }}</p>
 
-        <div class="quantity">
-          <label>Quantity</label>
-          <select v-model="quantity">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-          </select>
+        <div class="price-container">
+          <p class="price">
+            ${{ calculateDiscount(perfum.price, perfum.discount) }}
+          </p>
+          <p v-if="perfum.discount" class="original">${{ perfum.price }}</p>
+        </div>
+
+        <div class="add-to-card">
+          <PrimeButton @click="cart.addToCart(perfum, quantity)"
+            >Add To Cart</PrimeButton
+          >
+
+          <div class="quantity">
+            <label>Quantity</label>
+            <select v-model="quantity">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="info-table">
+          <p>Release Year</p>
+          <p>{{ perfum.release_year }}</p>
+
+          <p>Rating</p>
+          <p>{{ perfum.rating }} | ({{ perfum.rating_count }})</p>
+
+          <p>Sex</p>
+          <p>{{ perfum.sex }}</p>
+
+          <p>Concentration</p>
+          <p>{{ perfum.concentration }}</p>
+
+          <p>tags</p>
+          <div class="tags">
+            <p class="tag" v-for="tag in perfum.tags">{{ tag }}</p>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="info-table">
-        <p>Release Year</p>
-        <p>{{ perfum.release_year }}</p>
+    <NotFound v-else />
 
-        <p>Rating</p>
-        <p>{{ perfum.rating }} | ({{ perfum.rating_count }})</p>
-
-        <p>Sex</p>
-        <p>{{ perfum.sex }}</p>
-
-        <p>Concentration</p>
-        <p>{{ perfum.concentration }}</p>
-
-        <p>tags</p>
-        <div class="tags">
-          <p class="tag" v-for="tag in perfum.tags">{{ tag }}</p>
-        </div>
-      </div>
+    <div class="related-products">
+      <Carousel
+        :title="`Semiler Products ${perfum.tags[0]}`"
+        :products="getPerfumes({ tags: perfum.tags[0] })"
+      />
     </div>
-  </section>
-
-  <NotFound v-else />
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -257,5 +267,9 @@ if (perfum) {
       }
     }
   }
+}
+
+.related-products {
+  padding: 0 var(--space-8);
 }
 </style>
