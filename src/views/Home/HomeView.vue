@@ -6,7 +6,6 @@ import Hero from './Hero.vue'
 import Categories from './Categories.vue'
 import Brands from '@/components/Brands.vue'
 import Carousel from '@/components/Carousel.vue'
-import ProductCard from '@/components/ProductCard.vue'
 </script>
 
 <template>

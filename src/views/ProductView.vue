@@ -114,7 +114,7 @@ if (perfum) {
 
     <div class="related-products">
       <Carousel
-        :title="`Semiler Products ${perfum.tags[0]}`"
+        :title="`Similer Products `"
         :products="getPerfumes({ tags: perfum.tags[0] })"
       />
     </div>

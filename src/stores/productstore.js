@@ -66,16 +66,6 @@ export const useProductsStore = defineStore('products', () => {
     return result
   })
 
-  const brands = () => {
-    const result = []
-    products.value.forEach((product) => {
-      if (!result.includes(product.brand)) {
-        result.push(product.brand)
-      }
-    })
-    return result
-  }
-
   const clearFilter = () => {
     filter.value = {
       maxPrice,
@@ -89,7 +79,6 @@ export const useProductsStore = defineStore('products', () => {
   return {
     maxPrice,
     minPrice,
-    brands,
     filter,
     setFilter,
     filteredProducts,

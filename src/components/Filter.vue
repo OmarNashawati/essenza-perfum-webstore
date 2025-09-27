@@ -1,6 +1,8 @@
 <script setup>
 import { useProductsStore } from '@/stores/productstore'
 import { getCategories } from '@/services/categoriesService'
+import { getBrands } from '@/services/brandsService'
+
 const store = useProductsStore()
 
 const applyFilter = () => {
@@ -64,7 +66,7 @@ const applyFilter = () => {
 
         <div class="filter">
           <h3>Filter by Brand</h3>
-          <label v-for="brand in store.brands()" :key="brand" :for="brand">
+          <label v-for="brand in getBrands()" :key="brand" :for="brand">
             <input
               :id="brand"
               type="checkbox"

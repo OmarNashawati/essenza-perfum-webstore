@@ -7,8 +7,9 @@ export const useCartStore = defineStore('cart', () => {
   const { addNotification } = useNotificationStore()
   const cart = reactive({
     items: [],
-    total: 0,
+    // total: 0,
     discount_total: 0,
+    subtotal: 0,
   })
 
   const addToCart = (item, quantity) => {
@@ -31,7 +32,7 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   function recalculateCartTotal() {
-    cart.total = cart.items.reduce(
+    cart.subtotal = cart.items.reduce(
       (acc, cartItem) =>
         acc + cartItem.original_price * Number(cartItem.quantity),
       0
@@ -45,7 +46,7 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   const deliveryCoast = () => {
-    if (cart.total >= 250) {
+    if (cart.subtotal >= 250) {
       return 'Free'
     }
     return '35'

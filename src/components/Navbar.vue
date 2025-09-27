@@ -161,6 +161,7 @@ header {
       input {
         background: none;
         padding-left: 0;
+        border: none;
       }
     }
 

@@ -11,18 +11,29 @@ const cart = useCartStore()
     <div class="body">
       <div class="info">
         <p>Subtotal</p>
-        <i>${{ cart.cart.total }}</i>
+        <i>${{ cart.cart.subtotal }}</i>
 
         <p>Savings & Discounts</p>
         <i class="--green-text"
-          >- ${{ formatMoney(cart.cart.total - cart.cart.discount_total) }}</i
+          >- ${{
+            formatMoney(cart.cart.subtotal - cart.cart.discount_total)
+          }}</i
         >
 
-        <p>sheping</p>
+        <p>Shipping</p>
         <i>$ {{ cart.deliveryCoast() }}</i>
 
         <p class="total">Total <span>(Inc. 15% VAT)</span></p>
-        <i class="total">${{ formatMoney(cart.cart.discount_total) }}</i>
+        <i class="total"
+          >${{
+            formatMoney(
+              cart.cart.discount_total +
+                (typeof cart.deliveryCoast() === Number
+                  ? cart.deliveryCoast()
+                  : 0)
+            )
+          }}</i
+        >
       </div>
       <slot>
         <!-- Button Slot -->
@@ -47,7 +58,6 @@ const cart = useCartStore()
     display: flex;
     border-radius: 0.5rem;
     flex-direction: column;
-    // background-color: var(--gold-50);
     padding: var(--space-4);
     gap: var(--space-4);
   }
