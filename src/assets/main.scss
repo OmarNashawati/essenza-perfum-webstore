@@ -30,6 +30,7 @@ input[type='text'],
 input[type='password'],
 input[type='email'],
 input[type='tel'],
+input[type='number'],
 input[type='date'] {
   padding: var(--space-3) var(--space-5);
   border-radius: 0.5rem;
@@ -51,7 +52,6 @@ select {
   border-radius: 0.5rem;
   border: 1px solid var(--border);
   background: var(--bg);
-  color: var(--text);
 }
 
 ::-webkit-scrollbar {

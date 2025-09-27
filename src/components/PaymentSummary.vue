@@ -54,11 +54,16 @@ const cart = useCartStore()
     width: 100%;
   }
 
+  .title {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
   .body {
     display: flex;
     border-radius: 0.5rem;
     flex-direction: column;
-    padding: var(--space-4);
+    padding: var(--space-4) 0;
     gap: var(--space-4);
   }
 

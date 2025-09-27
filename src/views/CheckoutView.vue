@@ -1,36 +1,104 @@
 <script setup>
-import { useRouter } from 'vue-router'
 import PaymentSummary from '@/components/PaymentSummary.vue'
 import PrimeButton from '@/components/PrimeButton.vue'
+import { useRouter } from 'vue-router'
 import { getDeliveryMethods } from '@/services/deliveryMethodsService'
+import { deliveryMethods } from '@/assets/data/mockDeliveryMethods'
+import { getPaymentMethods } from '@/services/paymentMethodsService'
+
+import { ref } from 'vue'
+import PaymentForm from '@/components/PaymentForm.vue'
 
 const router = useRouter()
+
+const payStage = ref(false)
+
+const deliveryDetails = ref({
+  customerTitle: 'Mr',
+  deliveryMethod: 'Standard Delivery',
+})
+
+const saveAndCountinue = () => {
+  const {
+    firstName,
+    lastName,
+    customerTitle,
+    phoneNumber,
+    street,
+    address,
+    city,
+    state,
+    zipCode,
+    deliveryMethod,
+  } = deliveryDetails.value
+  if (
+    firstName &&
+    lastName &&
+    customerTitle &&
+    phoneNumber &&
+    street &&
+    address &&
+    city &&
+    state &&
+    zipCode &&
+    deliveryMethod
+  ) {
+    payStage.value = true
+  } else {
+    alert('all field have to be fiiled')
+  }
+}
 </script>
 
 <template>
   <section class="checkout-section container">
-    <div class="forms">
+    <!-- <div v-if="!payStage" class="forms">
       <form class="shipping-form">
         <h1>Delivery details & method <span>(* Required)</span></h1>
 
         <div class="form-row">
           <label for="">
-            Title *
-            <select>
-              <option value="">Mr</option>
-              <option value="">Mrs</option>
-              <option value="">Ms</option>
+            <select v-model="deliveryDetails.customerTitle">
+              <option value="Mr">Mr</option>
+              <option value="Mrs">Mrs</option>
+              <option value="Ms">Ms</option>
             </select>
           </label>
-          <input type="text" placeholder="First Name*" name="" id="" />
-          <input type="text" placeholder="Last Name*" name="" id="" />
+
+          <input
+            v-model="deliveryDetails.firstName"
+            type="text"
+            placeholder="First Name*"
+            name=""
+            id=""
+          />
+          <input
+            v-model="deliveryDetails.lastName"
+            type="text"
+            placeholder="Last Name*"
+            name=""
+            id=""
+          />
         </div>
 
-        <input type="tel" placeholder="Phone Number*" name="" id="" />
-
-        <input type="text" placeholder="Street Address*" name="" id="" />
+        <input
+          v-model="deliveryDetails.phoneNumber"
+          type="tel"
+          placeholder="Phone Number*"
+          name=""
+          id=""
+        />
 
         <input
+          v-model="deliveryDetails.street"
+          type="text"
+          placeholder="Street Address*"
+          name=""
+          id=""
+        />
+
+        <input
+          v-model="deliveryDetails.address"
           type="text"
           placeholder="Apt/ Suite/ Floor (Optional)"
           name=""
@@ -38,13 +106,36 @@ const router = useRouter()
         />
 
         <div class="form-row">
-          <input type="text" placeholder="* City" name="" id="" />
-          <input type="text" placeholder="* State" name="" id="" />
-          <input type="text" placeholder="* Zip Code" name="" id="" />
+          <input
+            v-model="deliveryDetails.city"
+            type="text"
+            placeholder="* City"
+            name=""
+            id=""
+          />
+          <input
+            v-model="deliveryDetails.state"
+            type="text"
+            placeholder="* State"
+            name=""
+            id=""
+          />
+          <input
+            v-model="deliveryDetails.zipCode"
+            type="Number"
+            maxlength="5"
+            placeholder="* Zip Code"
+            name=""
+            id=""
+          />
         </div>
 
         <label for="">
-          <input type="checkbox" checked />
+          <input
+            v-model="deliveryDetails.useBillinAddress"
+            type="checkbox"
+            checked
+          />
           Use as billing address
         </label>
       </form>
@@ -59,6 +150,7 @@ const router = useRouter()
                 :id="m.id"
                 name="deliveryMethod"
                 :value="m.name"
+                v-model="deliveryDetails.deliveryMethod"
               />
               {{ m.name }}
             </label>
@@ -71,10 +163,33 @@ const router = useRouter()
           </div>
         </div>
       </div>
+    </div> -->
+
+    <div v-if="true" class="pay-stage">
+      <div class="review-wrap">
+        <h1>Delivery details & method</h1>
+        <div>
+          <p>{{ deliveryDetails.firstName }} {{ deliveryDetails.lastName }}</p>
+          <p>{{ deliveryDetails.phoneNumber }}</p>
+          <br />
+          <p>{{ deliveryDetails.street }} {{ deliveryDetails.address }}</p>
+          <p>{{ deliveryDetails.city }}</p>
+          <p>{{ deliveryDetails.state }}</p>
+          <br />
+          <p>{{ deliveryDetails.deliveryMethod }}</p>
+        </div>
+      </div>
+
+      <div class="payment-wrap">
+        <h1>Review & Pay</h1>
+        <div>
+          <PaymentForm />
+        </div>
+      </div>
     </div>
 
     <PaymentSummary>
-      <PrimeButton>CONTINUE TO PAY</PrimeButton>
+      <PrimeButton @click="saveAndCountinue()">CONTINUE TO PAY</PrimeButton>
     </PaymentSummary>
   </section>
 </template>
@@ -99,6 +214,20 @@ const router = useRouter()
     display: flex;
     flex-direction: column;
     gap: var(--space-8);
+  }
+
+  .pay-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+
+    .review-wrap,
+    .payment-wrap {
+      border: 1px solid var(--border-gold);
+      padding: var(--space-4);
+      border-radius: 0.5rem;
+    }
   }
 }
 

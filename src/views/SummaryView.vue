@@ -139,7 +139,7 @@ const getProductImage = (img) => {
       margin-bottom: var(--space-4);
 
       h2 {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         font-weight: 600;
       }
     }

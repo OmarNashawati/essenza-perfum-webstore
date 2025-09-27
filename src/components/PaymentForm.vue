@@ -25,7 +25,7 @@ const activeFields = computed(() =>
 
     <div class="form-row">
       <label v-for="field in activeFields.fields" :for="field.id">
-        {{ field.required ? '*' : '' }} {{ field.label }}
+        {{ field.label }} {{ field.required ? '*' : '' }}
         <input
           :id="field.id"
           :name="field.id"
@@ -52,6 +52,13 @@ const activeFields = computed(() =>
   .form-row {
     display: flex;
     flex-direction: column;
+    gap: var(--space-4);
+    label {
+      color: var(--text-soft);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
   }
 }
 </style>
