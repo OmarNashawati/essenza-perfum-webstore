@@ -2,8 +2,6 @@
 import { footerContact } from '@/assets/data/UI/FooterContent'
 import { getTopBrands } from '@/services/brandsService'
 import { getTopCategories } from '@/services/categoriesService'
-
-console.log(getTopBrands())
 </script>
 
 <template>
@@ -46,7 +44,7 @@ console.log(getTopBrands())
           <h3>Top Categories</h3>
           <router-link
             v-for="category in getTopCategories()"
-            :to="{ name: 'products', query: { categories: brand } }"
+            :to="{ name: 'products', query: { category: category.name } }"
           >
             {{ category.name }}
           </router-link>

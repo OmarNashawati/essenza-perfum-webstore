@@ -26,21 +26,28 @@ const getProductImage = (img) => {
     </div>
 
     <div class="body">
+      <div class="rating">
+        <div>
+          <i class="rating-value">{{ product.rating }}</i>
+          <span class="pi pi-star-fill" style="color: var(--accent)"></span>
+        </div>
+        <i class="rating-count">({{ product.rating_count }})</i>
+      </div>
+
       <div>
         <p class="brand">{{ product.brand }}</p>
         <p class="name">{{ product.name }}</p>
         <p class="type">{{ product.tags[0] }}</p>
       </div>
+
       <div>
-        <div>
-          <div class="price-container">
-            <p class="price" :class="{ red: product.discount > 0 }">
-              ${{ calculateDiscount(product.price, product.discount) }}
-            </p>
-            <p v-if="product.discount > 0" class="original-price">
-              ${{ product.price }}
-            </p>
-          </div>
+        <div class="price-container">
+          <p class="price" :class="{ red: product.discount > 0 }">
+            ${{ calculateDiscount(product.price, product.discount) }}
+          </p>
+          <p v-if="product.discount > 0" class="original-price">
+            ${{ product.price }}
+          </p>
         </div>
       </div>
     </div>
@@ -80,11 +87,11 @@ const getProductImage = (img) => {
   .body {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    // align-items: center;
     justify-content: space-between;
     height: 150px;
-    padding: var(--space-2);
-    text-align: center;
+    padding: var(--space-4);
+    // text-align: center;
 
     .brand {
       font-weight: 800;
@@ -122,6 +129,21 @@ const getProductImage = (img) => {
           color: var(--danger);
         }
       }
+    }
+  }
+
+  .rating {
+    font-size: small;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: var(--space-2);
+    .rating-value {
+      margin-right: var(--space-1);
+    }
+    .rating-count {
+      color: var(--text-soft);
+      font-size: small;
     }
   }
 }

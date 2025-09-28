@@ -4,27 +4,38 @@ import { useRoute } from 'vue-router'
 import { calculateDiscount } from '@/utiles/money'
 import PrimeButton from '@/components/PrimeButton.vue'
 import { useCartStore } from '@/stores/cartStore'
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import NotFound from './NotFound.vue'
 import Carousel from '@/components/Carousel.vue'
 
 const cart = useCartStore()
 const route = useRoute()
 
-const perfum = getPerfum(route.params.id)
+const perfum = ref(null)
 const quantity = ref('1')
 const currentImage = ref(null)
 
 const productsImages = import.meta.glob('../assets/products/*.jpg', {
   eager: true,
 })
+
 const getProductImage = (img) => {
   return productsImages[`../assets/products/${img}`]?.default
 }
 
-if (perfum) {
-  currentImage.value = perfum.images[0]
-}
+watch(route, () => {
+  perfum.value = getPerfum(route.params.id)
+  if (perfum.value) {
+    currentImage.value = perfum.value.images[0]
+  }
+})
+
+onMounted(() => {
+  perfum.value = getPerfum(route.params.id)
+  if (perfum.value) {
+    currentImage.value = perfum.value.images[0]
+  }
+})
 </script>
 
 <template>
@@ -59,6 +70,14 @@ if (perfum) {
         </p>
 
         <p class="description">{{ perfum.description }}</p>
+
+        <div class="rating">
+          <div>
+            <i class="rating-value">{{ perfum.rating }}</i>
+            <span class="pi pi-star-fill" style="color: var(--accent)"></span>
+          </div>
+          <i class="rating-count">({{ perfum.rating_count }}) reviews</i>
+        </div>
 
         <div class="price-container">
           <p class="price">
@@ -112,7 +131,7 @@ if (perfum) {
 
     <NotFound v-else />
 
-    <div class="related-products">
+    <div v-if="perfum" class="related-products">
       <Carousel
         :title="`Similer Products `"
         :products="getPerfumes({ tags: perfum.tags[0] })"
@@ -271,5 +290,17 @@ if (perfum) {
 
 .related-products {
   padding: 0 var(--space-8);
+}
+
+.rating {
+  display: flex;
+  width: 100%;
+  gap: var(--space-4);
+  .rating-value {
+    margin-right: var(--space-1);
+  }
+  .rating-count {
+    color: var(--text-soft);
+  }
 }
 </style>

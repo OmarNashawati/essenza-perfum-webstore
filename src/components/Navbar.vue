@@ -15,12 +15,31 @@ const cart = useCartStore().cart
     <div class="top-bar">
       <div class="container">
         <div class="inner">
-          <div class="page-language">
-            <a href=""><span class="pi pi-language"></span> EN</a>
-            <a href=""><span class="pi pi-globe"></span> USA</a>
+          <div class="language-country-options">
+            <div class="current-language">
+              <a href=""><span class="pi pi-language"></span> EN</a>
+              <div class="dropdown">
+                <p>Languge</p>
+                <div class="inner">
+                  <i class="option" href="">English</i>
+                </div>
+              </div>
+            </div>
+            <div class="current-country">
+              <a href=""> <span class="pi pi-globe"></span> USA</a>
+              <div class="dropdown">
+                <p>Countrys</p>
+                <div class="inner">
+                  <i class="option" href="">USA</i>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <p>Free delivery on all orders above 299$</p>
+          <div class="center-text">
+            <p>Free delivery on all orders above 299$</p>
+          </div>
+
           <div class="login-links">
             <a href="">Track Order</a>
             |
@@ -106,15 +125,57 @@ header {
         }
       }
 
-      p {
+      .center-text {
         flex: 1;
         text-align: center;
         font-size: 0.9rem;
       }
 
-      .page-language {
+      .language-country-options {
         display: flex;
         gap: var(--space-4);
+
+        .current-language {
+          position: relative;
+          &:hover .dropdown {
+            display: flex;
+          }
+        }
+
+        .current-country {
+          position: relative;
+          &:hover .dropdown {
+            display: flex;
+          }
+        }
+
+        .dropdown {
+          position: absolute;
+          background: rgba(0, 0, 0, 0.8);
+          padding: var(--space-4);
+          border-radius: 0.4rem;
+          top: 100%;
+          display: none;
+          flex-direction: column;
+          align-items: start;
+
+          .inner {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-4);
+
+            .option {
+              min-width: 120px;
+              color: inherit;
+              font-weight: 600;
+              text-align: start;
+              &:hover {
+                color: var(--accent);
+                cursor: pointer;
+              }
+            }
+          }
+        }
 
         @media (max-width: 768px) {
           display: none;

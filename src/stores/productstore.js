@@ -3,6 +3,40 @@ import { computed, ref } from 'vue'
 
 import { getPerfumes } from '@/services/productService'
 
+// import { products as rawProducts } from '@/assets/data/table_products'
+// import { product_variants } from '@/assets/data/table_product_variant'
+// import { perfumes } from '@/assets/data/mockProducts'
+
+// export const useProductsStore = defineStore('products', () => {
+//   const products = ref([])
+//   const loading = null
+//   const error = null
+
+//   const fetchProducts = () => {
+//     loading.value = true
+//     try {
+//       const date = new Promise((resolve) => {
+//         const pro = rawProducts.forEach((p) => {
+//           p.variants = product_variants.filter((v) => v.productID === p.id)
+//         })
+//         setTimeout(() => resolve(pro))
+//       })
+//       products.value = data
+//     } catch (err) {
+//       error.value = err
+//     } finally {
+//       loading.value = false
+//     }
+//   }
+
+//   return {
+//     products,
+//     fetchProducts,
+//     error,
+//     loading,
+//   }
+// })
+
 export const useProductsStore = defineStore('products', () => {
   const products = ref(getPerfumes())
 
