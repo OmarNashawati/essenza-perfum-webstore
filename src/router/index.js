@@ -5,6 +5,7 @@ import ProductView from '@/views/ProductView.vue'
 import SummaryView from '@/views/SummaryView.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
 import NotFound from '@/views/NotFound.vue'
+import Login from '@/views/Login.vue'
 
 const routes = [
   {
@@ -35,6 +36,12 @@ const routes = [
     name: 'checkout',
     component: CheckoutView,
     meta: { title: 'Checkout' },
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+    meta: { title: (route) => `${route.query.action ? 'Register' : 'Login'}` },
   },
   {
     path: '/:pathMatch(.*)*',

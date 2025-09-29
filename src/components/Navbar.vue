@@ -46,9 +46,12 @@ const cart = useCartStore().cart
             <a href="">Contact Us</a>
             |
             <div>
-              <a href="">Login</a>
+              <router-link :to="{ name: 'login' }">Login</router-link>
               /
-              <a href="">Register</a>
+              <router-link
+                :to="{ name: 'login', query: { action: 'register' } }"
+                >Register</router-link
+              >
             </div>
           </div>
         </div>
