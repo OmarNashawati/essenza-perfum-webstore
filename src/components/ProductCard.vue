@@ -23,6 +23,8 @@ const getProductImage = (img) => {
       <div v-if="product.discount > 0" class="discount">
         {{ product.discount }}% OFF
       </div>
+
+      <div v-if="!product.availability" class="not-available">Sold out</div>
     </div>
 
     <div class="body">
@@ -72,6 +74,18 @@ const getProductImage = (img) => {
       top: var(--space-2);
       right: var(--space-2);
       background: rgba(0, 0, 0, 0.1);
+      padding: var(--space-2) var(--space-4);
+      border-radius: 25px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--danger);
+    }
+
+    .not-available {
+      position: absolute;
+      top: var(--space-2);
+      left: var(--space-2);
+      background: rgba(255, 0, 0, 0.1);
       padding: var(--space-2) var(--space-4);
       border-radius: 25px;
       font-size: 0.8rem;
