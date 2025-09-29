@@ -21,15 +21,18 @@ const router = useRouter()
 <style lang="scss" scoped>
 .hero-section {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
   text-align: center;
-  background: url('../../assets/hero/hero.jpg');
+  background: url('../../assets/hero/hero.png');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
 
   .hero-contant {
     max-width: 70%;
@@ -41,17 +44,20 @@ const router = useRouter()
     }
 
     .title {
-      font-size: clamp(1rem, 20vw, 4rem);
+      font-size: clamp(2.3rem, 5vw, 8rem);
+      font-weight: 600;
+
       color: var(--white);
     }
 
     .sub-title {
-      font-size: 1rem;
+      font-size: clamp(1rem, 2vw, 4rem);
       color: var(--white);
     }
 
     .hero-btn {
       margin-top: var(--space-10);
+      max-width: clamp(4rem, 10vw, 20rem);
     }
   }
 }

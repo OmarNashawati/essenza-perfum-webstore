@@ -4,7 +4,7 @@ export const homeContent = {
     subtitle:
       'Luxury perfumes curated for elegance, passion, and timeless style.',
     cta: { text: 'Shop Now', url: '/shop' },
-    image: 'https://shop.com/images/hero-banner.jpg',
+    image: 'hero.png',
   },
   carousels: [
     {
