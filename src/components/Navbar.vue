@@ -1,12 +1,10 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import { useThemeStore } from '@/stores/themeStore'
 import { useCartStore } from '@/stores/cartStore'
 import { getCategories } from '@/services/categoriesService'
 
 const categories = getCategories()
 const router = useRouter()
-const store = useThemeStore()
 const cart = useCartStore().cart
 </script>
 
@@ -76,12 +74,6 @@ const cart = useCartStore().cart
           <button @click="router.push('/cart')" class="cart-button">
             <i class="pi pi-shopping-bag"></i>
             <span class="cart-items-counter">{{ cart.items.length }}</span>
-          </button>
-          <button @click="store.toggleTheme()">
-            <i
-              class="pi"
-              :class="store.activeTheme === 'dark' ? 'pi-sun' : 'pi-moon'"
-            ></i>
           </button>
         </div>
       </div>
