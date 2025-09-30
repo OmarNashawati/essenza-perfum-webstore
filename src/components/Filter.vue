@@ -56,11 +56,11 @@ const applyFilter = () => {
             <input
               :id="category.id"
               type="checkbox"
-              :value="category.name"
+              :value="category.title"
               v-model="store.filter.categories"
               @change="applyFilter"
             />
-            {{ category.name }}
+            {{ category.title }}
           </label>
         </div>
 
@@ -99,6 +99,7 @@ const applyFilter = () => {
 
       h2 {
         font-weight: 600;
+        font-size: 1.1rem;
       }
       p {
         &:hover {
@@ -116,6 +117,12 @@ const applyFilter = () => {
       .filter {
         display: flex;
         flex-direction: column;
+
+        h3 {
+          padding-bottom: var(--space-2);
+          font-weight: 500;
+          font-size: 1.1rem;
+        }
       }
     }
     .search-input {
@@ -123,7 +130,13 @@ const applyFilter = () => {
       align-items: center;
       border-radius: 0.5rem;
       background: var(--bg);
-      padding: var(--space-2);
+      border: 1px solid var(--border);
+      padding: 0 var(--space-2);
+
+      input {
+        padding: var(--space-3);
+        border: none;
+      }
     }
   }
 }

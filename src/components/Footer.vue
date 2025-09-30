@@ -44,9 +44,9 @@ import { getTopCategories } from '@/services/categoriesService'
           <h3>Top Categories</h3>
           <router-link
             v-for="category in getTopCategories()"
-            :to="{ name: 'products', query: { category: category.name } }"
+            :to="{ name: 'products', query: { category: category.title } }"
           >
-            {{ category.name }}
+            {{ category.title }}
           </router-link>
         </div>
 

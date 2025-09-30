@@ -2,25 +2,27 @@
 import Filter from '@/components/Filter.vue'
 import ProductsGrid from '@/components/ProductsGrid.vue'
 import { useRoute } from 'vue-router'
-import { useProductsStore } from '@/stores/productstore'
 import { onMounted, ref, watch } from 'vue'
+// import { useProductsStore } from '@/stores/productstore'
 
+import { getProducts } from '@/services/productService'
+
+const products = ref(getProducts())
 const route = useRoute()
-const store = useProductsStore()
+// const store = useProductsStore()
 const title = ref('Products')
 
 const applyFilter = () => {
-  if (route.query.category) {
-    store.clearFilter()
-    store.setFilter({ categories: [route.query.category] })
-    title.value = route.query.category
-  }
-
-  if (route.query.brand) {
-    store.clearFilter()
-    store.setFilter({ brands: [route.query.brand] })
-    title.value = route.query.brand
-  }
+  // if (route.query.category) {
+  //   store.clearFilter()
+  //   store.setFilter({ categories: [route.query.category] })
+  //   title.value = route.query.category
+  // }
+  // if (route.query.brand) {
+  //   store.clearFilter()
+  //   store.setFilter({ brands: [route.query.brand] })
+  //   title.value = route.query.brand
+  // }
 }
 
 onMounted(() => {
@@ -33,13 +35,13 @@ watch(route, () => applyFilter())
 <template>
   <div class="products-view-warpper container">
     <div class="filter-warp">
-      <Filter />
+      <!-- <Filter /> -->
     </div>
 
     <div class="main-wrap">
       <div class="header">
         <h2 class="section-title">{{ title }}</h2>
-        <div>
+        <!-- <div>
           Sort by
           <select v-model="store.filter.sort" name="sort-options" id="">
             <option value="" disabled>Select an option</option>
@@ -49,14 +51,10 @@ watch(route, () => applyFilter())
             <option value="AtoZ">A-Z</option>
             <option value="ZtoA">Z-A</option>
           </select>
-        </div>
+        </div> -->
       </div>
 
-      <ProductsGrid
-        title="Products"
-        :products-list="store.filteredProducts"
-        layout="grid"
-      />
+      <ProductsGrid :products-list="products" />
     </div>
   </div>
 </template>

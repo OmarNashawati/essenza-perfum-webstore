@@ -37,7 +37,7 @@ const { notifications } = storeToRefs(store)
 
 .notifications {
   position: fixed;
-  top: var(--space-8);
+  top: 70px;
   right: var(--space-4);
   z-index: 100;
 

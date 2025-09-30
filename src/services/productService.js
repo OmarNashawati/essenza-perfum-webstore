@@ -1,25 +1,40 @@
-import { perfumes } from '@/assets/data/mockProducts'
+import { products } from '@/assets/data/table_products'
+import { product_variants } from '@/assets/data/table_product_variant'
+import { product_images } from '@/assets/data/table_images'
 
 // import { useProductsStore } from '@/stores/productstore'
 
 // const store = useProductsStore()
 
-export const getPerfumes = (filter) => {
-  if (filter) {
-    if (filter.tags) {
-      return perfumes.filter((p) => p.tags.includes(filter.tags))
-    }
+export const getProducts = (filter) => {
+  const result = products
+
+  result.forEach((p) => {
+    p.variants = getProductVariants(p.id)
+  })
+
+  return result
+}
+
+export const getProduct = (id) => {
+  const result = products.find((p) => p.id === Number(id))
+
+  if (result) {
+    result.variants = getProductVariants(Number(id))
+    return result
+  } else {
+    return false
   }
-  return perfumes
 }
 
-export const getPerfum = (sku) => {
-  return perfumes.find((perfum) => perfum.sku === sku)
+const getProductVariants = (productID) => {
+  let variants = product_variants.filter((v) => v.productID === productID)
+  variants.forEach((v) => {
+    v.images = getVariantImages(v.sku)
+  })
+  return variants
 }
 
-// export const getProducts = () => {
-//   return
-// }
-// export const getProduct = (sku) => {}
-
-// const normalize = (product) => {}
+const getVariantImages = (sku) => {
+  return product_images.filter((img) => img.sku === sku)
+}

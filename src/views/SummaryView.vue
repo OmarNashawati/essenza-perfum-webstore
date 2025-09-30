@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cartStore'
-import { formatMoney } from '@/utiles/money'
+import { calculateDiscount, formatMoney } from '@/utiles/money'
 import PrimeButton from '@/components/PrimeButton.vue'
 import PaymentSummary from '@/components/PaymentSummary.vue'
 const router = useRouter()
@@ -11,7 +11,7 @@ const productsImages = import.meta.glob('../assets/products/*.jpg', {
   eager: true,
 })
 const getProductImage = (img) => {
-  return productsImages[`../assets/products/${img}`]?.default
+  return productsImages[`../assets/products/${img.image}`]?.default
 }
 </script>
 
@@ -33,35 +33,42 @@ const getProductImage = (img) => {
           <p>Item</p>
           )
         </div>
-
         <div class="items">
           <div
             class="item"
             v-for="cartItem in cart.cart.items"
-            :key="cartItem.sku"
+            :key="cartItem.variant.sku"
           >
             <div
               @click="
-                router.push({ name: 'product', params: { id: cartItem.sku } })
+                router.push({ name: 'product', params: { id: cartItem.id } })
               "
               class="image"
             >
-              <img :src="getProductImage(cartItem.image)" alt="" />
+              <img :src="getProductImage(cartItem.variant.images[0])" alt="" />
             </div>
             <div class="details">
               <div class="upper-row">
                 <div class="col-1">
                   <h3 class="brand">{{ cartItem.brand }}</h3>
-                  <h3 class="name">{{ cartItem.name }}</h3>
-                  <i v-if="cartItem.discount" class="discount"
-                    >%{{ cartItem.discount }} OFF</i
+                  <h3 class="name">{{ cartItem.title }}</h3>
+                  <i v-if="cartItem.variant.discount" class="discount"
+                    >%{{ cartItem.variant.discount }} OFF</i
                   >
-
+                  <pre>{{ cartItem.variant.sku }}</pre>
+                  <pre>{{ cartItem.id }}</pre>
                   <div class="price-container">
-                    <p class="price">${{ cartItem.price_with_discount }}</p>
-                    <div v-if="cartItem.discount">
+                    <p class="price">
+                      ${{
+                        calculateDiscount(
+                          cartItem.variant.price,
+                          cartItem.variant.discount
+                        )
+                      }}
+                    </p>
+                    <div v-if="cartItem.variant.discount">
                       <i class="original-price">
-                        ${{ cartItem.original_price }}
+                        ${{ cartItem.variant.price }}
                       </i>
                     </div>
                   </div>
@@ -70,7 +77,10 @@ const getProductImage = (img) => {
                 <div class="col-2">
                   ${{
                     formatMoney(
-                      cartItem.price_with_discount * Number(cartItem.quantity)
+                      calculateDiscount(
+                        cartItem.variant.price,
+                        cartItem.variant.discount
+                      ) * Number(cartItem.quantity)
                     )
                   }}
                 </div>
@@ -157,7 +167,7 @@ const getProductImage = (img) => {
         flex-direction: row;
         overflow: hidden;
         gap: var(--space-4);
-        height: 150px;
+        min-height: 150px;
         border-bottom: 1px solid var(--border);
 
         &:last-child {
@@ -166,7 +176,8 @@ const getProductImage = (img) => {
 
         .image {
           flex: 1 0 auto;
-          height: 100%;
+          height: 150px;
+          width: 150px;
           cursor: pointer;
         }
 

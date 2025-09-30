@@ -1,5 +1,5 @@
 // {id, product_variantID, image_url}
-export const images = [
+export const product_images = [
   {
     id: 1,
     sku: 'PERF001',

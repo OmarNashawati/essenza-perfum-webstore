@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
 import { calculateDiscount } from '@/utiles/money'
+import { getProduct } from '@/services/productService'
 import { useNotificationStore } from '@/stores/notification'
 
 export const useCartStore = defineStore('cart', () => {
@@ -12,35 +13,41 @@ export const useCartStore = defineStore('cart', () => {
     subtotal: 0,
   })
 
-  const addToCart = (item, quantity) => {
-    const { name, brand, images, sku, price, discount } = item
+  const addToCart = (id, sku, quantity) => {
+    const product = getProduct(id)
+    const variant = product.variants.find((v) => v.sku === sku)
 
-    if (item.availability) {
-      cart.items.push({
-        name,
-        brand,
-        image: images[0],
-        sku,
-        discount,
-        original_price: price,
-        price_with_discount: calculateDiscount(price, discount),
-        quantity,
-      })
+    if (variant.available) {
+      const inCard = cart.items.find((p) => p.id === id)?.variant.sku
 
-      addNotification(`${name} Added to Cart!`)
+      if (inCard) {
+        cart.items.find((p) => p.id === id).quantity =
+          Number(cart.items.find((p) => p.id === id).quantity) +
+          Number(quantity)
+      } else {
+        cart.items.push({
+          ...product,
+          variant,
+          quantity,
+        })
+      }
+
+      addNotification(`${product.title} Added to Cart!`)
     } else addNotification(`This Product Not Available`, 'error')
   }
 
   function recalculateCartTotal() {
     cart.subtotal = cart.items.reduce(
       (acc, cartItem) =>
-        acc + cartItem.original_price * Number(cartItem.quantity),
+        acc + cartItem.variant.price * Number(cartItem.quantity),
       0
     )
 
     cart.discount_total = cart.items.reduce(
       (acc, cartItem) =>
-        acc + cartItem.price_with_discount * Number(cartItem.quantity),
+        acc +
+        calculateDiscount(cartItem.variant.price, cartItem.variant.discount) *
+          Number(cartItem.quantity),
       0
     )
   }
@@ -54,7 +61,7 @@ export const useCartStore = defineStore('cart', () => {
 
   const removeFromCart = (item) => {
     const itemToRemove = cart.items.findIndex(
-      (cartItem) => cartItem.sku === item.sku
+      (cartItem) => cartItem.variant.sku === item.variant.sku
     )
 
     if (itemToRemove >= 0) {

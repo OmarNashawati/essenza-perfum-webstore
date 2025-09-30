@@ -8,7 +8,6 @@ export const useNotificationStore = defineStore('notification', () => {
     const id = Date.now()
     notifications.value.push({ id, message, type })
 
-    console.log(notifications.value)
     setTimeout(() => {
       removeNotifcation(id)
     }, duration)

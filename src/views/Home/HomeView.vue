@@ -1,6 +1,6 @@
 <script setup>
-import { getPerfumes } from '@/services/productService'
 import { homeContent } from '@/assets/data/UI/HomeContent'
+import { getProducts } from '@/services/productService'
 
 import Hero from './Hero.vue'
 import Categories from './Categories.vue'
@@ -32,7 +32,7 @@ import Carousel from '@/components/Carousel.vue'
       <Carousel
         v-for="c in homeContent.carousels"
         :title="c.title"
-        :products="getPerfumes({ tags: c.title })"
+        :products="getProducts()"
       />
     </div>
   </div>

@@ -8,7 +8,7 @@ const props = defineProps(['productsList'])
     <div class="products-grid">
       <ProductCard
         v-for="product in productsList"
-        :key="product.sku"
+        :key="product.id"
         :product="product"
       />
     </div>

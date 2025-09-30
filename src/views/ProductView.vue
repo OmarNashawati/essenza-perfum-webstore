@@ -1,51 +1,56 @@
 <script setup>
-import { getPerfum, getPerfumes } from '@/services/productService'
-import { useRoute } from 'vue-router'
-import { calculateDiscount } from '@/utiles/money'
 import PrimeButton from '@/components/PrimeButton.vue'
-import { useCartStore } from '@/stores/cartStore'
-import { onMounted, ref, watch } from 'vue'
 import NotFound from './NotFound.vue'
 import Carousel from '@/components/Carousel.vue'
+
+import { onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { calculateDiscount } from '@/utiles/money'
+import { useCartStore } from '@/stores/cartStore'
+import { getProduct, getProducts } from '@/services/productService'
 
 const cart = useCartStore()
 const route = useRoute()
 
-const perfum = ref(null)
+const product = ref(null)
+const variant = ref(null)
+
 const quantity = ref('1')
 const currentImage = ref(null)
+
+onMounted(() => {
+  product.value = getProduct(route.params.id)
+  if (product.value) {
+    variant.value = product.value.variants[0]
+    currentImage.value = variant.value.images[0]
+  }
+})
+
+watch(route, () => {
+  product.value = getProduct(route.params.id)
+  if (product.value) {
+    variant.value = product.value.variants[0]
+    currentImage.value = variant.value.images[0]
+  }
+})
 
 const productsImages = import.meta.glob('../assets/products/*.jpg', {
   eager: true,
 })
 
 const getProductImage = (img) => {
-  return productsImages[`../assets/products/${img}`]?.default
+  return productsImages[`../assets/products/${img.image}`]?.default
 }
-
-watch(route, () => {
-  perfum.value = getPerfum(route.params.id)
-  if (perfum.value) {
-    currentImage.value = perfum.value.images[0]
-  }
-})
-
-onMounted(() => {
-  perfum.value = getPerfum(route.params.id)
-  if (perfum.value) {
-    currentImage.value = perfum.value.images[0]
-  }
-})
 </script>
 
 <template>
   <div class="container">
-    <section v-if="perfum" class="product-wrapper">
+    <section v-if="product" class="product-wrapper">
       <div class="gallery">
         <div class="sub-images">
           <img
             @click="currentImage = image"
-            v-for="image in perfum.images"
+            v-for="image in variant.images"
             :src="getProductImage(image)"
             :class="{ 'current-image': currentImage === image }"
             alt=""
@@ -57,37 +62,38 @@ onMounted(() => {
       </div>
 
       <div class="product-info">
-        <p class="brand">{{ perfum.brand }}</p>
+        <p class="brand">{{ product.brand }}</p>
 
         <div>
-          <p class="name">{{ perfum.name }}</p>
-          <p class="concentration">{{ perfum.concentration }}</p>
+          <p class="name">{{ product.title }}</p>
+          <p class="concentration">{{ product.concentration }}</p>
         </div>
 
-        <p :class="perfum.availability ? 'in-stock' : 'sold-out'">
-          <i v-if="perfum.availability" class="pi pi-check"></i>
-          {{ perfum.availability ? 'In Stock' : 'Sold out ' }}
+        <p :class="variant.available ? 'in-stock' : 'sold-out'">
+          <i v-if="variant.available" class="pi pi-check"></i>
+          {{ variant.available ? 'In Stock' : 'Sold out ' }}
         </p>
 
-        <p class="description">{{ perfum.description }}</p>
+        <p class="description">{{ product.description }}</p>
 
         <div class="rating">
           <div>
-            <i class="rating-value">{{ perfum.rating }}</i>
+            <i class="rating-value">{{ product.rating }}</i>
             <span class="pi pi-star-fill" style="color: var(--accent)"></span>
           </div>
-          <i class="rating-count">({{ perfum.rating_count }}) reviews</i>
+          <i class="rating-count">({{ product.ratingCount }}) reviews</i>
         </div>
 
         <div class="price-container">
           <p class="price">
-            ${{ calculateDiscount(perfum.price, perfum.discount) }}
+            ${{ calculateDiscount(variant.price, variant.discount) }}
           </p>
-          <p v-if="perfum.discount" class="original">${{ perfum.price }}</p>
+          <p v-if="variant.discount" class="original">${{ variant.price }}</p>
         </div>
 
         <div class="add-to-card">
-          <PrimeButton @click="cart.addToCart(perfum, quantity)"
+          <PrimeButton
+            @click="cart.addToCart(product.id, variant.sku, quantity)"
             >Add To Cart</PrimeButton
           >
 
@@ -110,32 +116,21 @@ onMounted(() => {
 
         <div class="info-table">
           <p>Release Year</p>
-          <p>{{ perfum.release_year }}</p>
-
-          <p>Rating</p>
-          <p>{{ perfum.rating }} | ({{ perfum.rating_count }})</p>
+          <p>{{ product.releasYear }}</p>
 
           <p>Sex</p>
-          <p>{{ perfum.sex }}</p>
+          <p>{{ variant.sex }}</p>
 
           <p>Concentration</p>
-          <p>{{ perfum.concentration }}</p>
-
-          <p>tags</p>
-          <div class="tags">
-            <p class="tag" v-for="tag in perfum.tags">{{ tag }}</p>
-          </div>
+          <p>{{ variant.concentration }}</p>
         </div>
       </div>
     </section>
 
     <NotFound v-else />
 
-    <div v-if="perfum" class="related-products">
-      <Carousel
-        :title="`Similer Products `"
-        :products="getPerfumes({ tags: perfum.tags[0] })"
-      />
+    <div v-if="product" class="related-products">
+      <Carousel :title="`Similer Products `" :products="getProducts()" />
     </div>
   </div>
 </template>

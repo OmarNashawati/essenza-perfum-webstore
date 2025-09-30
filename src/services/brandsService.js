@@ -1,8 +1,8 @@
-import { getPerfumes } from './productService'
+import { getProducts } from './productService'
 
 export const getBrands = () => {
   const result = []
-  getPerfumes().forEach((product) => {
+  getProducts().forEach((product) => {
     if (!result.includes(product.brand)) {
       result.push(product.brand)
     }
@@ -12,7 +12,7 @@ export const getBrands = () => {
 
 export const getTopBrands = (limit = 5) => {
   const result = []
-  getPerfumes().forEach((product) => {
+  getProducts().forEach((product) => {
     if (!result.includes(product.brand)) {
       result.push(product.brand)
     }

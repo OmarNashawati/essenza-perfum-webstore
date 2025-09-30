@@ -73,7 +73,14 @@ const cart = useCartStore().cart
           </button>
           <button @click="router.push('/cart')" class="cart-button">
             <i class="pi pi-shopping-bag"></i>
-            <span class="cart-items-counter">{{ cart.items.length }}</span>
+            <span class="cart-items-counter">
+              {{
+                cart.items.reduce(
+                  (acc, cartItem) => acc + Number(cartItem.quantity),
+                  0
+                )
+              }}
+            </span>
           </button>
         </div>
       </div>
@@ -82,19 +89,32 @@ const cart = useCartStore().cart
     <div class="bottom-bar">
       <div class="container">
         <div class="categories-wrap">
-          <p
-            v-for="category in categories"
-            @click="
-              router.push({
-                name: 'products',
-                query: {
-                  category: category.name,
-                },
-              })
-            "
-          >
-            {{ category.name }}
-          </p>
+          <div class="item" v-for="category in categories">
+            <p
+              @click="
+                router.push({
+                  name: 'products',
+                  query: { category: category.title },
+                })
+              "
+            >
+              {{ category.title }}
+            </p>
+
+            <div class="subcategories" v-if="category.subCategories">
+              <p
+                v-for="sub in category.subCategories"
+                @click="
+                  router.push({
+                    name: 'products',
+                    query: { category: sub.title },
+                  })
+                "
+              >
+                {{ sub.title }}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -272,13 +292,28 @@ header {
       justify-content: center;
       overflow-x: scroll;
       padding: 0 var(--space-4);
-      p {
+
+      .item {
         white-space: nowrap;
-        padding: var(--space-2) var(--space-4);
         cursor: pointer;
-        &:hover {
-          text-decoration: underline;
+        position: relative;
+
+        p {
+          padding: var(--space-2) var(--space-4);
+          &:hover {
+            text-decoration: underline;
+          }
         }
+
+        &:hover .subcategories {
+          display: block;
+        }
+      }
+
+      .subcategories {
+        display: none;
+        // position: absolute;
+        background: var(--bg);
       }
     }
   }

@@ -1,9 +1,11 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { calculateDiscount } from '@/utiles/money'
+import { ref } from 'vue'
 
 const router = useRouter()
 const props = defineProps(['product'])
+const variant = ref(props.product.variants[0])
 
 const productsImages = import.meta.glob('../assets/products/*.jpg', {
   eager: true,
@@ -15,16 +17,16 @@ const getProductImage = (img) => {
 
 <template>
   <div
-    @click="router.push({ name: 'product', params: { id: product.sku } })"
+    @click="router.push({ name: 'product', params: { id: product.id } })"
     class="product-card"
   >
     <div class="image">
-      <img :src="getProductImage(product.images[0])" alt="" srcset="" />
-      <div v-if="product.discount > 0" class="discount">
-        {{ product.discount }}% OFF
+      <img :src="getProductImage(variant.images[0].image)" alt="" srcset="" />
+      <div v-if="variant.discount > 0" class="discount">
+        {{ variant.discount }}% OFF
       </div>
 
-      <div v-if="!product.availability" class="not-available">Sold out</div>
+      <div v-if="!variant.available" class="not-available">Sold out</div>
     </div>
 
     <div class="body">
@@ -33,22 +35,22 @@ const getProductImage = (img) => {
           <i class="rating-value">{{ product.rating }}</i>
           <span class="pi pi-star-fill" style="color: var(--accent)"></span>
         </div>
-        <i class="rating-count">({{ product.rating_count }})</i>
+        <i class="rating-count">({{ product.ratingCount }})</i>
       </div>
 
       <div>
         <p class="brand">{{ product.brand }}</p>
-        <p class="name">{{ product.name }}</p>
-        <p class="type">{{ product.tags[0] }}</p>
+        <p class="name">{{ product.title }}</p>
+        <!-- <p class="type">{{ product.tags[0] }}</p> -->
       </div>
 
       <div>
         <div class="price-container">
           <p class="price" :class="{ red: product.discount > 0 }">
-            ${{ calculateDiscount(product.price, product.discount) }}
+            ${{ calculateDiscount(variant.price, variant.discount) }}
           </p>
-          <p v-if="product.discount > 0" class="original-price">
-            ${{ product.price }}
+          <p v-if="variant.discount > 0" class="original-price">
+            ${{ variant.price }}
           </p>
         </div>
       </div>
